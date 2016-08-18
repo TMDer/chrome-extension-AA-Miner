@@ -1,0 +1,45 @@
+{
+  "name": "AA Miner Extension",
+  "version": "0.0.2",
+  "manifest_version": 2,
+  "description": "AA Miner Chrome Extension",
+  "icons": {
+    "16": "AA-Miner-icon-128.png",
+    "48": "AA-Miner-icon-128.png",
+    "128": "AA-Miner-icon-128.png"
+  },
+  "background": {
+    "scripts": [
+      "background.js", "jquery-2.0.0.min.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_icon": "AA-Miner-icon-128.png",
+    "default_title": "AA Miner"
+  },
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://business.facebook.com/ads/manage/powereditor/*"
+      ],
+      "css": [
+        "inject.css"
+      ]
+    },
+    {
+      "matches": [
+        "https://business.facebook.com/ads/manage/powereditor/*"
+      ],
+      "js": [
+        "jquery-2.0.0.min.js","inject.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
