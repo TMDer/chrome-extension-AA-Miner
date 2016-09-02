@@ -20,8 +20,10 @@
   },
   "permissions": [
     "tabs",
-    "http://*/*",
-    "https://*/*"
+    "https://business.facebook.com/*",
+    "webRequest",
+    "webRequestBlocking",
+    "declarativeWebRequest"
   ],
   "content_scripts": [
     {

@@ -21,3 +21,17 @@ function checkUrl(tabId, changeInfo, tab) {
 chrome.tabs.onUpdated.addListener(checkUrl);
 console.log("!!! background")
 
+
+chrome.webRequest.onBeforeRequest.addListener(function(details) {
+
+	if(details.url) {
+		stringifyDetails = JSON.stringify(details.url);
+		console.log("!!! 000webRequestBlocking details" + stringifyDetails);
+	}
+
+	if(details.requestBody) {
+		requestBodyFormDataQ= JSON.stringify(details.requestBody.formData.q);
+		console.log("!!! 111requestBodyFormDataQ" + requestBodyFormDataQ);
+	}
+
+}, {urls: ["https://business.facebook.com/ajax/bz"]}, ["requestBody"]);
