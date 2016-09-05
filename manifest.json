@@ -21,6 +21,7 @@
   "permissions": [
     "tabs",
     "https://business.facebook.com/*",
+    "https://graph.facebook.com/*",
     "webRequest",
     "webRequestBlocking",
     "declarativeWebRequest"
