@@ -1,23 +1,14 @@
 <html>
   <head>
     <title>Adminer Popup Login Button</title>
-    <style>
-      #view {
-        height: 100px;
-        width: 400px;
-      }
-    </style>
+    <link rel="stylesheet" href="popup.css">
   </head>
   <body>
     <div id="view">
-      <form action="http://yahoo.com.tw" method="post">
-        <input id="username" name="username" type="text" placeholder="ID">
-        <input name="password" type="password" placeholder="Password">
-        <input type="submit" value="Login">
-      </form>
-      <input type="submit" value="Logout"/>
+      <input id="username" class="field" name="username" type="text" placeholder="ID" maxlength="20">
+      <input id="password" class="field" name="password" type="password" placeholder="Password" maxlength="20">
+      <button id="Login" class="btn">Login</button>
+      <button id="Logout" class="btn">Logout</button>
     </div>
-    <script>
-    </script>
   </body>
 </html>
