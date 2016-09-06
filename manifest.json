@@ -23,8 +23,7 @@
     "https://business.facebook.com/*",
     "https://graph.facebook.com/*",
     "webRequest",
-    "webRequestBlocking",
-    "declarativeWebRequest"
+    "webRequestBlocking"
   ],
   "content_scripts": [
     {
