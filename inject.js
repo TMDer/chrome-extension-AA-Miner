@@ -22,7 +22,7 @@ function changeButtonContinue() {
     var originButtonContinue = document.getElementsByClassName("selected")[1];
     var createDom = document.createElement('button');
     var parentDom = originButtonContinue.parentNode;
-    createDom.id = "updateformPE";
+    createDom.id = "updatefromPE";
     createDom.innerText = "AA Miner Continue"
     createDom.style.display = "inline-block";
     originButtonContinue.style.display = "none";
