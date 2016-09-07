@@ -1,4 +1,4 @@
-var urlParams = {};
+var currentAddraftsParams = {};
 
 function getDomain(url) {
   var host = "null";
@@ -24,13 +24,14 @@ chrome.tabs.onUpdated.addListener(checkUrl);
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var params = details.url.split("/");
-  var token = params[5].split("&")[0].replace("current_addrafts?access_token=", "");
-  var businessId = params[5].split("&")[2].replace("__business_id=", "");
-  var adAccountId = params[4].replace("act_","");
-  urlParams.token = token;
-  urlParams.businessId = businessId;
-  urlParams.adAccountId = adAccountId;
+  var urlParams = params[5].split("&");
+  var token = urlParams[0].replace("current_addrafts?access_token=", "");
+  var businessId = urlParams[2].replace("__business_id=", "");
+  var adAccountId = params[4].replace("act_", "");
+  currentAddraftsParams.token = token;
+  currentAddraftsParams.businessId = businessId;
+  currentAddraftsParams.adAccountId = adAccountId;
 
   // todo: send message to content js for AA Miner API
-  console.log(urlParams);
+  console.log(currentAddraftsParams);
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
