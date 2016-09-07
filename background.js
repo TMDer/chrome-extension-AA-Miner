@@ -1,4 +1,6 @@
-function getDomain(url){
+var currentAddraftsParams = {};
+
+function getDomain(url) {
   var host = "null";
   if(typeof url == "undefined" || null == url)
     url = window.location.href;
@@ -10,7 +12,7 @@ function getDomain(url){
 }
 
 function checkUrl(tabId, changeInfo, tab) {
-  if(getDomain(tab.url).toLowerCase() == "business.facebook.com"){
+  if(getDomain(tab.url).toLowerCase() == "business.facebook.com") {
     chrome.browserAction.enable(tabId);
   }else {
     chrome.browserAction.disable(tabId);
@@ -42,5 +44,19 @@ function sendMessageToTab(tabs) {
 chrome.tabs.onUpdated.addListener(checkUrl);
 
 chrome.tabs.onUpdated.addListener(function() {
-  chrome.tabs.query({currentWindow: true, active: true},sendMessageToTab);
+  chrome.tabs.query({currentWindow: true, active: true}, sendMessageToTab);
 });
+
+chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+  var params = details.url.split("/");
+  var urlParams = params[5].split("&");
+  var token = urlParams[0].replace("current_addrafts?access_token=", "");
+  var businessId = urlParams[2].replace("__business_id=", "");
+  var adAccountId = params[4].replace("act_", "");
+  currentAddraftsParams.token = token;
+  currentAddraftsParams.businessId = businessId;
+  currentAddraftsParams.adAccountId = adAccountId;
+
+  // todo: send message to content js for AA Miner API
+  console.log(currentAddraftsParams);
+}, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);

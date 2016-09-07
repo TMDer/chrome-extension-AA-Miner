@@ -16,12 +16,15 @@
   },
   "browser_action": {
     "default_icon": "AA-Miner-icon-128.png",
-    "default_title": "AA Miner"
+    "default_title": "AA Miner",
+    "default_popup": "popup.html"
   },
   "permissions": [
     "tabs",
-    "http://*/*",
-    "https://*/*"
+    "https://business.facebook.com/*",
+    "https://graph.facebook.com/*",
+    "webRequest",
+    "webRequestBlocking"
   ],
   "content_scripts": [
     {

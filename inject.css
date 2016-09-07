@@ -3,9 +3,9 @@
 }
 
 #updatefromPE {
-  display: inline-block;
   line-height: 22px;
   margin-left: 4px;
   background-color: red;
   color: white;
+  display: inline-block;
 }
