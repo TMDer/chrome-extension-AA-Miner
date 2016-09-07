@@ -24,7 +24,8 @@
     "https://business.facebook.com/*",
     "https://graph.facebook.com/*",
     "webRequest",
-    "webRequestBlocking"
+    "webRequestBlocking",
+    "http://localhost:1337/chromeExtension/updateFromPE"
   ],
   "content_scripts": [
     {

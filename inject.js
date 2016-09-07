@@ -1,4 +1,7 @@
 var addraftParams = "";
+var domain = "http://localhost:1337"; // develop
+// var domain = "http://adminer.hiiir.com"; // prodution
+
 
 function changeButtonReviewChanges() {
   var buttonReviewChanges = document.getElementsByClassName("selected")[0];
@@ -6,7 +9,7 @@ function changeButtonReviewChanges() {
   buttonReviewChanges.onclick = function() {
     setTimeout(function() {
       changeButtonContinue();
-    }, 3000);
+    }, 1000);
   };
 };
 
@@ -24,13 +27,28 @@ function changeButtonContinue() {
 
 function handleMessage(request, sender, sendResponse) {
   addraftParams = request.params;
-  sendResponse({response: "PE has Sent AA Miner API!!!"});
+  sendResponse({response: "PE has get current addrafts params!!!"});
 };
 
-// todo: send AA Miner API
 function sendAAMinerAPI() {
-  var res = JSON.stringify(addraftParams);
-  console.log("!!! 905 PE send API" + res);
+  var par = {
+    peAccessToken: "EAABsbCS1iHgBABTVzhvTHxeid9Hsa2NIMNclcoPQ8jEW10QpST0RqJZAvyzNYYB9XjeWaqy4AsEYOoo3fOCXjKb1JKiv2z8AHUILAZAgTYO7aNbNMZCS5xZAlRRiHS10p7QoOPEtT9PZCvpWU4U0xmwt6xVt4ukEZD",
+    businessId: "658875397530836",
+    adAccountId: "1380410268871704"
+  };
+  $.ajax({
+    method: "POST",
+    url: "http://localhost:1337/chromeExtension/updateFromPE"
+    // data: addraftParams
+    // data: par
+  })
+    .success(function(msg) {
+      alert("!!! Data Saved :: " + msg);
+    })
+    .fail(function(msg) {
+      var rrr = JSON.stringify(msg, null, 2);
+      alert("AA Miner 出現小小小問題囉！ 請稍候再試:: " + rrr);
+    });
 };
 
 chrome.runtime.onMessage.addListener(handleMessage);
