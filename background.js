@@ -1,6 +1,6 @@
 var urlParams = {};
 
-function getDomain(url){
+function getDomain(url) {
   var host = "null";
   if(typeof url == "undefined" || null == url)
     url = window.location.href;
@@ -12,7 +12,7 @@ function getDomain(url){
 }
 
 function checkUrl(tabId, changeInfo, tab) {
-  if(getDomain(tab.url).toLowerCase() == "business.facebook.com"){
+  if(getDomain(tab.url).toLowerCase() == "business.facebook.com") {
     chrome.browserAction.enable(tabId);
   }else {
     chrome.browserAction.disable(tabId);
@@ -23,19 +23,14 @@ function checkUrl(tabId, changeInfo, tab) {
 chrome.tabs.onUpdated.addListener(checkUrl);
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+  var params = details.url.split("/");
+  var token = params[5].split("&")[0].replace("current_addrafts?access_token=", "");
+  var businessId = params[5].split("&")[2].replace("__business_id=", "");
+  var adAccountId = params[4].replace("act_","");
+  urlParams.token = token;
+  urlParams.businessId = businessId;
+  urlParams.adAccountId = adAccountId;
 
-  if(details.url.match("current_addrafts")){
-    var params =  details.url.split("/");
-    var token = params[5].split("&")[0].replace("current_addrafts?access_token=","");
-    var businessId = params[5].split("&")[2].replace("__business_id=","");
-    var adAccountId = params[4].replace("act_","");
-
-    urlParams.token = token;
-    urlParams.businessId = businessId;
-    urlParams.adAccountId = adAccountId;
-
-    // todo: send message to content js for AA Miner API
-    console.log(urlParams);
-  }
-
-}, {urls: ["<all_urls>"]}, ["blocking", "requestHeaders"]);
+  // todo: send message to content js for AA Miner API
+  console.log(urlParams);
+}, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
