@@ -1,6 +1,8 @@
 function changeReviewButton() {
   var buttonReviewChanges = document.getElementsByClassName("selected")[0];
-  buttonReviewChanges.innerText = "AA Miner Review Changes";
+  if(buttonReviewChanges !== undefined) {
+    buttonReviewChanges.innerText = "AA Miner Review Changes";
+  }
   buttonReviewChanges.onclick = function() {
     setTimeout(function() {
         changeButtonContinue();
@@ -23,3 +25,4 @@ function changeButtonContinue() {
 setTimeout(function() {
   changeReviewButton();
 }, 15000);
+
