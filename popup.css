@@ -20,6 +20,7 @@
 }
 
 .btn {
+  float: right;
   background-color: #e9ebee;
   border: 1px solid;
   border-color: #9b9b9b;
@@ -28,7 +29,6 @@
   color: #626a77;
   font-size: 14px;
   height: 34px;
-  margin-right: 10px;
   padding-left: 10px;
   padding-right: 10px;
   width: 45px;
