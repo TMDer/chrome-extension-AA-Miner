@@ -1,3 +1,37 @@
+var options = {
+	domain : 'localhost'
+};
+
+chrome.cookies.getAll(options,function(data) {
+	var cookies = getCookieForRememberMe(data);
+	isRememberMe(cookies);
+});
+
+function getCookieForRememberMe(data){
+	return data.filter(
+		function (info) {
+			return info.name == "remember_me"
+		});
+}
+
+function isRememberMe(cookies){
+	if(cookies.length > 0){
+		onMessageForCheckRememberMe(true);
+	} else {
+		onMessageForCheckRememberMe(false);
+	}
+}
+
+function onMessageForCheckRememberMe(status){
+	chrome.runtime.onMessage.addListener(
+		function(request, sender, response) {
+			response(status);
+		}
+	);
+}
+
+chrome.tabs.onUpdated.addListener(checkUrl);
+
 function getDomain(url){
 	var host = "null";
 	if(typeof url == "undefined" || null == url)
@@ -16,8 +50,3 @@ function checkUrl(tabId, changeInfo, tab) {
 		chrome.browserAction.disable(tabId);
 	}
 };
-
-// 只要 tab 更新就會在背景觸發比對網址是不是 "business.facebook.com"，決定要不要啟動 AAminer
-chrome.tabs.onUpdated.addListener(checkUrl);
-console.log("!!! background")
-
