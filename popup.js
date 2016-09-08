@@ -11,13 +11,13 @@ function getCurrentTabUrl(callback) {
 
 };
 
-function initialLoginButton(){
-  $("#login").click(function(){
+function initialLoginButton() {
+  $("#login").click(function() {
     var username = $("input[name='username']").val();
     var password = $("input[name='password']").val();
     var remember_me = $("input[name='remember_me']").val();
 
-    $.ajax({
+    $.ajax( {
       method: "POST",
       url: loginUrl,
       data: {
@@ -27,28 +27,28 @@ function initialLoginButton(){
       }
     })
       .success(function( msg ) {
-        if(msg.status === "success"){
+        if(msg.status === "success") {
           loginViewChange();
         } else {
           $(".warning").show();
         }
       })
-      .fail(function(error){
+      .fail(function(error) {
         $("#status").text('fail');
       });
   });
 }
 
-function initialLogoutButton(){
-  $("#logout").click(function(){
-    $.ajax({
+function initialLogoutButton() {
+  $("#logout").click(function() {
+    $.ajax( {
       method: "POST",
       url: logoutUrl
     })
       .success(function( msg ) {
         logoutViewChange();
       })
-      .fail(function(error){
+      .fail(function(error) {
         $("#status").text('fail');
       });
   });
@@ -56,7 +56,7 @@ function initialLogoutButton(){
 
 chrome.runtime.sendMessage(
   "check rememberMe", function(rememberMe) {
-    if(rememberMe){
+    if(rememberMe) {
       loginViewChange();
     } else {
       logoutViewChange();
@@ -64,7 +64,7 @@ chrome.runtime.sendMessage(
   }
 );
 
-function loginViewChange(){
+function loginViewChange() {
   $("input[name='username']").hide();
   $("input[name='password']").hide();
   $("input[name='remember_me']").hide();
@@ -73,7 +73,7 @@ function loginViewChange(){
   $("#logout").show();
 }
 
-function logoutViewChange(){
+function logoutViewChange() {
   $("input[name='username']").show();
   $("input[name='password']").show();
   $("input[name='remember_me']").show();

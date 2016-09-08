@@ -7,22 +7,22 @@ chrome.cookies.getAll(options,function(data) {
   isRememberMe(cookies);
 });
 
-function getCookieForRememberMe(data){
+function getCookieForRememberMe(data) {
   return data.filter(
     function (info) {
       return info.name == "remember_me"
     });
 }
 
-function isRememberMe(cookies){
-  if(cookies.length > 0){
+function isRememberMe(cookies) {
+  if(cookies.length > 0) {
     onMessageForCheckRememberMe(true);
   } else {
     onMessageForCheckRememberMe(false);
   }
 }
 
-function onMessageForCheckRememberMe(status){
+function onMessageForCheckRememberMe(status) {
   chrome.runtime.onMessage.addListener(
     function(request, sender, response) {
       response(status);
@@ -32,7 +32,7 @@ function onMessageForCheckRememberMe(status){
 
 chrome.tabs.onUpdated.addListener(checkUrl);
 
-function getDomain(url){
+function getDomain(url) {
   var host = "null";
   if(typeof url == "undefined" || null == url)
     url = window.location.href;
@@ -44,9 +44,9 @@ function getDomain(url){
 }
 
 function checkUrl(tabId, changeInfo, tab) {
-  if(getDomain(tab.url).toLowerCase() == "business.facebook.com"){
+  if(getDomain(tab.url).toLowerCase() == "business.facebook.com") {
     chrome.browserAction.enable(tabId);
-  }else {
+  } else {
     chrome.browserAction.disable(tabId);
   }
 };
