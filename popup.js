@@ -8,6 +8,7 @@ function getCurrentTabUrl(callback) {
   initialLoginButton();
   initialLogoutButton();
   callback();
+
 };
 
 function initialLoginButton(){
