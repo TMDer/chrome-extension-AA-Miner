@@ -21,7 +21,8 @@ function checkUrl(tabId, changeInfo, tab) {
 
 function handleResponse(message) {
   if(message) {
-    console.log("!!! message from the content script :: " + message.response);
+    // check for content script has get the current_addrafts params
+    console.log("message from the content script: " + message.response);
   }
 };
 

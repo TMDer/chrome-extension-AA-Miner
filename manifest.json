@@ -21,11 +21,12 @@
   },
   "permissions": [
     "tabs",
+    "cookies",
     "https://business.facebook.com/*",
     "https://graph.facebook.com/*",
     "webRequest",
     "webRequestBlocking",
-    "http://localhost:1337/chromeExtension/updateFromPE"
+    "http://localhost:1337/*"
   ],
   "content_scripts": [
     {

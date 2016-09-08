@@ -4,13 +4,13 @@ var domain = "http://localhost:1337"; // develop
 
 
 function changeButtonReviewChanges() {
-  var buttonReviewChanges = document.getElementsByClassName("selected")[0];
-  buttonReviewChanges.innerText = "AA Miner Review Changes";
-  buttonReviewChanges.onclick = function() {
+  var buttonReviewChanges = document.getElementsByClassName("_2yak");
+  buttonReviewChanges[0].style.backgroundColor = "red";
+  buttonReviewChanges[0].addEventListener("click", function() {
     setTimeout(function() {
       changeButtonContinue();
     }, 1000);
-  };
+  });
 };
 
 function changeButtonContinue() {
@@ -31,23 +31,27 @@ function handleMessage(request, sender, sendResponse) {
 };
 
 function sendAAMinerAPI() {
-  var par = {
-    peAccessToken: "EAABsbCS1iHgBABTVzhvTHxeid9Hsa2NIMNclcoPQ8jEW10QpST0RqJZAvyzNYYB9XjeWaqy4AsEYOoo3fOCXjKb1JKiv2z8AHUILAZAgTYO7aNbNMZCS5xZAlRRiHS10p7QoOPEtT9PZCvpWU4U0xmwt6xVt4ukEZD",
-    businessId: "658875397530836",
-    adAccountId: "1380410268871704"
-  };
   $.ajax({
     method: "POST",
-    url: "http://localhost:1337/chromeExtension/updateFromPE"
-    // data: addraftParams
-    // data: par
+    url: domain + "/chromeExtension/updateFromPE",
+    data: addraftParams
   })
-    .success(function(msg) {
-      alert("!!! Data Saved :: " + msg);
+    .done(function(msgDone) {
+      var statusDone = msgDone.status;
+      var buttonClose = document.getElementsByClassName('layerCancel')[0];
+      if(statusDone = "success") {
+        alert("AA Miner Update Success!");
+        buttonClose.click();
+      }
     })
-    .fail(function(msg) {
-      var rrr = JSON.stringify(msg, null, 2);
-      alert("AA Miner 出現小小小問題囉！ 請稍候再試:: " + rrr);
+    .fail(function(msgFail) {
+      var statusFail = msgFail.status;
+      if(statusFail = "failed") {
+        alert("更新失敗！");
+      }
+      else {
+        alert("伺服器出現錯誤，請稍候再試！");
+      }
     });
 };
 
