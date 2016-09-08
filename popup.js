@@ -22,7 +22,7 @@ function initialLoginButton() {
       url: loginUrl,
       data: {
         username: username,
-        password : password ,
+        password : password,
         remember_me : remember_me
       }
     })
