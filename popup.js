@@ -26,7 +26,7 @@ function initialLoginButton() {
         remember_me : remember_me
       }
     })
-      .success(function( msg ) {
+      .done(function( msg ) {
         if(msg.status === "success") {
           loginViewChange();
         } else {
@@ -45,7 +45,7 @@ function initialLogoutButton() {
       method: "POST",
       url: logoutUrl
     })
-      .success(function( msg ) {
+      .done(function( msg ) {
         logoutViewChange();
       })
       .fail(function(error) {
