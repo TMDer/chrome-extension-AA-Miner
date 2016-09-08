@@ -1,7 +1,11 @@
 #view {
-  height: auto;
+  height: 50px;
   padding: 20px;
-  width: 400px;
+  width: 280px;
+}
+
+#logout, .warning {
+  display: none;
 }
 
 .field {
@@ -38,4 +42,9 @@
   background-color: #286090;
   border-color: #204d74;
   color: #fff;
+}
+
+.warning {
+  color: red;
+  font-size: 14px;
 }
