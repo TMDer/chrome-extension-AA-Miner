@@ -26,7 +26,8 @@
     "https://graph.facebook.com/*",
     "webRequest",
     "webRequestBlocking",
-    "http://localhost:1337/*"
+    "http://localhost:1337/*",
+    "https://adminer.hiiir.com/*"
   ],
   "content_scripts": [
     {
