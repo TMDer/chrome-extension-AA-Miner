@@ -1,36 +1,13 @@
-var options = {
-  domain : 'localhost'
-};
-
-chrome.cookies.getAll(options,function(data) {
-  var cookies = getCookieForRememberMe(data);
-  isRememberMe(cookies);
-});
-
-function getCookieForRememberMe(data) {
-  return data.filter(
-    function (info) {
-      return info.name == "remember_me"
-    });
-}
-
-function isRememberMe(cookies) {
-  if(cookies.length > 0) {
-    onMessageForCheckRememberMe(true);
-  } else {
-    onMessageForCheckRememberMe(false);
-  }
-}
-
-function onMessageForCheckRememberMe(status) {
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, response) {
-      response(status);
-    }
-  );
-}
-
 chrome.tabs.onUpdated.addListener(checkUrl);
+
+function checkUrl(tabId, changeInfo, tab) {
+  if(getDomain(tab.url).toLowerCase() === "business.facebook.com") {
+    chrome.browserAction.enable(tabId);
+    getAllCookies();
+  } else {
+    chrome.browserAction.disable(tabId);
+  }
+};
 
 function getDomain(url) {
   var host = "null";
@@ -43,10 +20,37 @@ function getDomain(url) {
   return host;
 }
 
-function checkUrl(tabId, changeInfo, tab) {
-  if(getDomain(tab.url).toLowerCase() == "business.facebook.com") {
-    chrome.browserAction.enable(tabId);
+function getAllCookies() {
+
+  var options = {
+    domain : 'localhost'
+  };
+
+  chrome.cookies.getAll(options,function(data) {
+    var cookies = getCookieForRememberMe(data);
+    var rememberMeStatus = isRememberMe(cookies);
+    onMessageForCheckRememberMe(rememberMeStatus);
+  });
+}
+
+function getCookieForRememberMe(data) {
+  return data.filter(
+    function (info) {
+      return info.name === "remember_me"
+    });
+}
+
+function isRememberMe(cookies) {
+  if(cookies.length > 0) {
+    return true
   } else {
-    chrome.browserAction.disable(tabId);
+    return false
   }
-};
+}
+
+function onMessageForCheckRememberMe(remeberMeStatus) {
+  chrome.runtime.onMessage.addListener(function(request, sender, response) {
+    response(remeberMeStatus);
+  });
+}
+

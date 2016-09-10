@@ -4,18 +4,23 @@ var logoutUrl = "http://localhost:1337/auth/logout";
 // var loginUrl = "https://http://adminer.hiiir.com/auth/signin/chromeExtension"
 // var logoutUrl = "https://http://adminer.hiiir.com/auth/logout";
 
+var loginButton = null;
+var logoutButton = null;
+var usernameText = null
+var passwordText = null
+var rememberMeText = null
+
 function getCurrentTabUrl(callback) {
   initialLoginButton();
   initialLogoutButton();
   callback();
-
 };
 
 function initialLoginButton() {
-  $("#login").click(function() {
-    var username = $("input[name='username']").val();
-    var password = $("input[name='password']").val();
-    var remember_me = $("input[name='remember_me']").val();
+  loginButton.click(function() {
+    var username = usernameText.val();
+    var password = passwordText.val();
+    var rememberMe = rememberMeCheckBox.val();
 
     $.ajax( {
       method: "POST",
@@ -23,24 +28,24 @@ function initialLoginButton() {
       data: {
         username: username,
         password : password,
-        remember_me : remember_me
+        remember_me : rememberMe
       }
     })
       .done(function(msg) {
         if(msg.status === "success") {
           loginViewChange();
-        } else {
-          $(".warning").show();
+          return
         }
+        warningMsg.text('User is not existed or password is not correct.');
       })
       .fail(function(error) {
-        $("#status").text('fail');
+        warningMsg.text('Login Fail');
       });
   });
 }
 
 function initialLogoutButton() {
-  $("#logout").click(function() {
+  logoutButton.click(function() {
     $.ajax( {
       method: "POST",
       url: logoutUrl
@@ -49,14 +54,14 @@ function initialLogoutButton() {
         logoutViewChange();
       })
       .fail(function(error) {
-        $("#status").text('fail');
+        warningMsg.text('Login Fail');
       });
   });
 }
 
 chrome.runtime.sendMessage(
-  "check rememberMe", function(rememberMe) {
-    if(rememberMe) {
+  "checkRememberMe", function(rememberMeStatus) {
+    if(rememberMeStatus) {
       loginViewChange();
     } else {
       logoutViewChange();
@@ -65,23 +70,32 @@ chrome.runtime.sendMessage(
 );
 
 function loginViewChange() {
-  $("input[name='username']").hide();
-  $("input[name='password']").hide();
-  $("input[name='remember_me']").hide();
-  $(".warning").hide();
-  $("#login").hide();
-  $("#logout").show();
+  usernameText.hide();
+  passwordText.hide();
+  rememberMeCheckBox.hide();
+  warningMsg.hide();
+  loginButton.hide();
+  logoutButton.show();
 }
 
 function logoutViewChange() {
-  $("input[name='username']").show();
-  $("input[name='password']").show();
-  $("input[name='remember_me']").show();
-  $("#login").show();
-  $("#logout").hide();
+  usernameText.show();
+  passwordText.show();
+  rememberMeCheckBox.show();
+  warningMsg.hide();
+  loginButton.show();
+  logoutButton.hide();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+  loginButton = $("#login");
+  logoutButton = $("#logout");
+  usernameText = $("input[name='username']");
+  passwordText = $("input[name='password']");
+  rememberMeCheckBox = $("input[name='remember_me']");
+  warningMsg = $(".warning");
+
   getCurrentTabUrl(function() {
 
   });
