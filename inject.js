@@ -1,6 +1,6 @@
 var addraftParams = "";
 var domain = "http://localhost:1337"; // develop
-// var domain = "https://adminer.hiiir.com"; // prodution
+// var domain = "https://adminer.hiiir.com"; // procdution
 
 
 function changeButtonReviewChanges() {
@@ -39,7 +39,7 @@ function sendAAMinerAPI() {
     .done(function(msgDone) {
       var statusDone = msgDone.status;
       var buttonClose = document.getElementsByClassName("layerCancel")[0];
-      if(statusDone = "success") {
+      if(statusDone === "success") {
         alert("AA Miner Update Success!");
         buttonClose.click();
       }
