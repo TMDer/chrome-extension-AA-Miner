@@ -48,10 +48,9 @@ function sendAAMinerAPI() {
     var statusFail = msgFail.status;
     if(statusFail === "failed") {
       alert("更新失敗！");
+      return;
     }
-    else {
-      alert("伺服器出現錯誤，請稍候再試！");
-    }
+    alert("伺服器出現錯誤，請稍候再試！");
   });
 };
 
