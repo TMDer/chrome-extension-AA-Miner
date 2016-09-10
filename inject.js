@@ -36,23 +36,23 @@ function sendAAMinerAPI() {
     url: domain + "/chromeExtension/updateFromPE",
     data: addraftParams
   })
-    .done(function(msgDone) {
-      var statusDone = msgDone.status;
-      var buttonClose = document.getElementsByClassName("layerCancel")[0];
-      if(statusDone === "success") {
-        alert("AA Miner Update Success!");
-        buttonClose.click();
-      }
-    })
-    .fail(function(msgFail) {
-      var statusFail = msgFail.status;
-      if(statusFail === "failed") {
-        alert("更新失敗！");
-      }
-      else {
-        alert("伺服器出現錯誤，請稍候再試！");
-      }
-    });
+  .done(function(msgDone) {
+    var statusDone = msgDone.status;
+    var buttonClose = document.getElementsByClassName("layerCancel")[0];
+    if(statusDone === "success") {
+      alert("AA Miner Update Success!");
+      buttonClose.click();
+    }
+  })
+  .fail(function(msgFail) {
+    var statusFail = msgFail.status;
+    if(statusFail === "failed") {
+      alert("更新失敗！");
+    }
+    else {
+      alert("伺服器出現錯誤，請稍候再試！");
+    }
+  });
 };
 
 chrome.runtime.onMessage.addListener(handleMessage);
