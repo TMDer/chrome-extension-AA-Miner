@@ -22,19 +22,21 @@ function changeButtonContinue() {
   createDom.style.display = "inline-block";
   originButtonContinue.style.display = "none";
   parentDom.appendChild(createDom);
-  createDom.addEventListener("click", sendAAMinerAPI);
+  createDom.addEventListener("click", requestAddraftParams);
 };
 
-function handleMessage(request, sender, sendResponse) {
-  addraftParams = request.params;
-  sendResponse({response: "PE has get current addrafts params!"});
+function requestAddraftParams() {
+  chrome.runtime.sendMessage("addraftParams", function(data) {
+    addraftParams = data.response;
+    sendAAMinerAPI(addraftParams);
+  });
 };
 
-function sendAAMinerAPI() {
+function sendAAMinerAPI(data) {
   $.ajax({
     method: "POST",
     url: domain + "/chromeExtension/updateFromPE",
-    data: addraftParams
+    data: data
   })
   .done(function(msgDone) {
     var statusDone = msgDone.status;
@@ -43,20 +45,15 @@ function sendAAMinerAPI() {
       alert("AA Miner Update Success!");
       buttonClose.click();
     }
-  })
-  .fail(function(msgFail) {
-    var statusFail = msgFail.status;
-    if(statusFail === "failed") {
-      alert("更新失敗！");
-      return;
+    else if(statusDone === "failed") {
+      alert(msgDone.message + " 更新失敗！");
     }
+  })
+  .fail(function() {
     alert("伺服器出現錯誤，請稍候再試！");
   });
 };
 
-chrome.runtime.onMessage.addListener(handleMessage);
-
 setTimeout(function() {
   changeButtonReviewChanges();
 }, 15000);
-

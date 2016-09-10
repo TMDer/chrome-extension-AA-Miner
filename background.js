@@ -19,30 +19,8 @@ function checkUrl(tabId, changeInfo, tab) {
   }
 };
 
-function handleResponse(message) {
-  if(message) {
-    // check for content script has get the current_addrafts params
-    console.log("message from the content script: " + message.response);
-  }
-};
-
-function sendMessageToTab(tabs) {
-  var params = currentAddraftsParams;
-  if(tabs.length > 0) {
-    chrome.tabs.sendMessage(
-      tabs[0].id,
-      {params: params},
-      handleResponse
-    );
-  }
-};
-
 // 只要 tab 更新就會在背景觸發比對網址是不是 "business.facebook.com"，決定要不要啟動 AAminer
 chrome.tabs.onUpdated.addListener(checkUrl);
-
-chrome.tabs.onUpdated.addListener(function() {
-  chrome.tabs.query({currentWindow: true, active: true}, sendMessageToTab);
-});
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var params = details.url.split("/");
@@ -54,3 +32,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   currentAddraftsParams.businessId = businessId;
   currentAddraftsParams.adAccountId = adAccountId;
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if(message === "addraftParams") {
+      sendResponse({response: currentAddraftsParams});
+    }
+});
