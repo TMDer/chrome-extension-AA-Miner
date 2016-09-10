@@ -1,6 +1,6 @@
 var addraftParams = "";
 var domain = "http://localhost:1337"; // develop
-// var domain = "https://adminer.hiiir.com"; // procdution
+// var domain = "https://adminer.hiiir.com"; // production
 
 
 function changeButtonReviewChanges() {
