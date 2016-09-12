@@ -4,9 +4,9 @@ function checkUrl(tabId, changeInfo, tab) {
   if(getDomain(tab.url).toLowerCase() === "business.facebook.com") {
     chrome.browserAction.enable(tabId);
     getAllCookies();
-  } else {
-    chrome.browserAction.disable(tabId);
   }
+
+  chrome.browserAction.disable(tabId);
 };
 
 function getDomain(url) {
@@ -42,15 +42,19 @@ function getCookieForRememberMe(data) {
 
 function isRememberMe(cookies) {
   if(cookies.length > 0) {
-    return true
-  } else {
-    return false
+    return true;
   }
+  return false;
 }
 
 function onMessageForCheckRememberMe(remeberMeStatus) {
-  chrome.runtime.onMessage.addListener(function(request, sender, response) {
-    response(remeberMeStatus);
+  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    switch(message){
+      case "checkRememberMe" :
+        sendResponse(remeberMeStatus);
+        break;
+    }
+    return;
   });
 }
 

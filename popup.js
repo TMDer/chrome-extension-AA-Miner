@@ -27,20 +27,20 @@ function initialLoginButton() {
       url: loginUrl,
       data: {
         username: username,
-        password : password,
-        remember_me : rememberMe
+        password: password,
+        remember_me: rememberMe
       }
     })
-      .done(function(msg) {
-        if(msg.status === "success") {
-          loginViewChange();
-          return
-        }
-        warningMsg.text('User is not existed or password is not correct.');
-      })
-      .fail(function(error) {
-        warningMsg.text('Login Fail');
-      });
+    .done(function(msg) {
+      if(msg.status === "success") {
+        loginViewChange();
+        return;
+      }
+      warningMsg.text('User is not existed or password is not correct.');
+    })
+    .fail(function(error) {
+      warningMsg.text('Login Fail');
+    });
   });
 }
 
@@ -50,12 +50,12 @@ function initialLogoutButton() {
       method: "POST",
       url: logoutUrl
     })
-      .done(function(msg) {
-        logoutViewChange();
-      })
-      .fail(function(error) {
-        warningMsg.text('Login Fail');
-      });
+    .done(function(msg) {
+      logoutViewChange();
+    })
+    .fail(function(error) {
+      warningMsg.text('Login Fail');
+    });
   });
 }
 
@@ -63,9 +63,9 @@ chrome.runtime.sendMessage(
   "checkRememberMe", function(rememberMeStatus) {
     if(rememberMeStatus) {
       loginViewChange();
-    } else {
-      logoutViewChange();
     }
+
+    logoutViewChange();
   }
 );
 
@@ -88,7 +88,6 @@ function logoutViewChange() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
   loginButton = $("#login");
   logoutButton = $("#logout");
   usernameText = $("input[name='username']");
