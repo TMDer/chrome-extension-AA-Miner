@@ -9,7 +9,7 @@ function getDomain(url) {
   if(typeof match != "undefined" && null != match)
     host = match[1];
   return host;
-}
+};
 
 function checkUrl(tabId, changeInfo, tab) {
   if(getDomain(tab.url).toLowerCase() == "business.facebook.com") {
@@ -31,7 +31,10 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   currentAddraftsParams.token = token;
   currentAddraftsParams.businessId = businessId;
   currentAddraftsParams.adAccountId = adAccountId;
-
-  // todo: send message to content js for AA Miner API
-  console.log(currentAddraftsParams);
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if(message === "addraftParams") {
+      sendResponse({response: currentAddraftsParams});
+    }
+});

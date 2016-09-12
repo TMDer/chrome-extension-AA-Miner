@@ -21,10 +21,13 @@
   },
   "permissions": [
     "tabs",
+    "cookies",
     "https://business.facebook.com/*",
     "https://graph.facebook.com/*",
     "webRequest",
-    "webRequestBlocking"
+    "webRequestBlocking",
+    "http://localhost:1337/*",
+    "https://adminer.hiiir.com/*"
   ],
   "content_scripts": [
     {

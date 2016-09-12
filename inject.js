@@ -1,28 +1,59 @@
-function changeReviewButton() {
-  var buttonReviewChanges = document.getElementsByClassName("selected")[0];
-  if(buttonReviewChanges !== undefined) {
-    buttonReviewChanges.innerText = "AA Miner Review Changes";
-  }
-  buttonReviewChanges.onclick = function() {
+var addraftParams = "";
+var domain = "http://localhost:1337"; // develop
+// var domain = "https://adminer.hiiir.com"; // production
+
+
+function changeButtonReviewChanges() {
+  var buttonReviewChanges = document.getElementsByClassName("_2yak");
+  buttonReviewChanges[0].style.backgroundColor = "red";
+  buttonReviewChanges[0].addEventListener("click", function() {
     setTimeout(function() {
-        changeButtonContinue();
-    }, 3000);
-  };
+      changeButtonContinue();
+    }, 1000);
+  });
 };
 
 function changeButtonContinue() {
   var originButtonContinue = document.getElementsByClassName("selected")[1];
-  var createDom = document.createElement('button');
+  var createDom = document.createElement("button");
   var parentDom = originButtonContinue.parentNode;
-  createDom.id = "updateformPE";
+  createDom.id = "updatefromPE";
   createDom.innerText = "AA Miner Continue"
   createDom.style.display = "inline-block";
   originButtonContinue.style.display = "none";
   parentDom.appendChild(createDom);
+  createDom.addEventListener("click", requestAddraftParams);
 };
 
-// Do something after FB loading end
-setTimeout(function() {
-  changeReviewButton();
-}, 15000);
+function requestAddraftParams() {
+  chrome.runtime.sendMessage("addraftParams", function(data) {
+    addraftParams = data.response;
+    sendAAMinerAPI(addraftParams);
+  });
+};
 
+function sendAAMinerAPI(data) {
+  $.ajax({
+    method: "POST",
+    url: domain + "/chromeExtension/updateFromPE",
+    data: data
+  })
+  .done(function(msgDone) {
+    var statusDone = msgDone.status;
+    var buttonClose = document.getElementsByClassName("layerCancel")[0];
+    if(statusDone === "success") {
+      alert("AA Miner Update Success!");
+      buttonClose.click();
+    }
+    else if(statusDone === "failed") {
+      alert(msgDone.message + " 更新失敗！");
+    }
+  })
+  .fail(function() {
+    alert("伺服器出現錯誤，請稍候再試！");
+  });
+};
+
+setTimeout(function() {
+  changeButtonReviewChanges();
+}, 15000);
