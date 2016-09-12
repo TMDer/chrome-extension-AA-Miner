@@ -5,8 +5,8 @@ function checkUrl(tabId, changeInfo, tab) {
   if(getDomain(tab.url).toLowerCase() === "business.facebook.com") {
     chrome.browserAction.enable(tabId);
     getAllCookies();
+    return;
   }
-
   chrome.browserAction.disable(tabId);
 };
 
