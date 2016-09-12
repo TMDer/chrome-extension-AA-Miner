@@ -6,9 +6,10 @@ var logoutUrl = "http://localhost:1337/auth/logout";
 
 var loginButton = null;
 var logoutButton = null;
-var usernameText = null
-var passwordText = null
-var rememberMeText = null
+var usernameText = null;
+var passwordText = null;
+var rememberMeText = null;
+var rememberMeLabel = null;
 
 function getCurrentTabUrl(callback) {
   initialLoginButton();
@@ -36,9 +37,11 @@ function initialLoginButton() {
         loginViewChange();
         return;
       }
+      warningMsg.show();
       warningMsg.text('User is not existed or password is not correct.');
     })
     .fail(function(error) {
+      warningMsg.show();
       warningMsg.text('Login Fail');
     });
   });
@@ -54,6 +57,7 @@ function initialLogoutButton() {
       logoutViewChange();
     })
     .fail(function(error) {
+      warningMsg.show();
       warningMsg.text('Login Fail');
     });
   });
@@ -74,6 +78,7 @@ function loginViewChange() {
   usernameText.hide();
   passwordText.hide();
   rememberMeCheckBox.hide();
+  rememberMeLabel.hide();
   warningMsg.hide();
   loginButton.hide();
   logoutButton.show();
@@ -83,6 +88,7 @@ function logoutViewChange() {
   usernameText.show();
   passwordText.show();
   rememberMeCheckBox.show();
+  rememberMeLabel.show();
   warningMsg.hide();
   loginButton.show();
   logoutButton.hide();
@@ -94,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
   usernameText = $("input[name='username']");
   passwordText = $("input[name='password']");
   rememberMeCheckBox = $("input[name='remember_me']");
+  rememberMeLabel = $("Label[for='rememberMe']");
   warningMsg = $(".warning");
 
   getCurrentTabUrl(function() {

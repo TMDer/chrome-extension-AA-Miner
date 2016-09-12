@@ -1,3 +1,7 @@
-.selected {
-    background-color: red !important;
+#updatefromPE {
+  line-height: 22px;
+  margin-left: 4px;
+  background-color: red !important;
+  color: white;
+  display: inline-block;
 }

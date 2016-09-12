@@ -1,3 +1,4 @@
+var currentAddraftsParams = {};
 chrome.tabs.onUpdated.addListener(checkUrl);
 
 function checkUrl(tabId, changeInfo, tab) {
@@ -58,3 +59,19 @@ function onMessageForCheckRememberMe(remeberMeStatus) {
   });
 }
 
+chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+  var params = details.url.split("/");
+  var urlParams = params[5].split("&");
+  var token = urlParams[0].replace("current_addrafts?access_token=", "");
+  var businessId = urlParams[2].replace("__business_id=", "");
+  var adAccountId = params[4].replace("act_", "");
+  currentAddraftsParams.token = token;
+  currentAddraftsParams.businessId = businessId;
+  currentAddraftsParams.adAccountId = adAccountId;
+}, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if(message === "addraftParams") {
+      sendResponse({response: currentAddraftsParams});
+    }
+});
