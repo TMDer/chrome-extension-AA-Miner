@@ -1,5 +1,6 @@
 var addraftParams = "";
 var domain = "http://localhost:1337"; // develop
+// var domain = "http://pmd.dev.hq.hiiir"; // preview
 // var domain = "https://adminer.hiiir.com"; // production
 
 

@@ -1,7 +1,10 @@
-var loginUrl = "http://localhost:1337/auth/signin/chromeExtension"
+var loginUrl = "http://localhost:1337/auth/signin/chromeExtension";
 var logoutUrl = "http://localhost:1337/auth/logout";
 
-// var loginUrl = "https://http://adminer.hiiir.com/auth/signin/chromeExtension"
+// var loginUrl = "http://pmd.dev.hq.hiiir/auth/signin/chromeExtension";
+// var logoutUrl = "http://pmd.dev.hq.hiiir/auth/logout";
+
+// var loginUrl = "https://http://adminer.hiiir.com/auth/signin/chromeExtension";
 // var logoutUrl = "https://http://adminer.hiiir.com/auth/logout";
 
 var loginButton = null;

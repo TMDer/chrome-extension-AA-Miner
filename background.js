@@ -25,6 +25,7 @@ function getAllCookies() {
 
   var options = {
     domain : 'localhost'
+    // domain : 'pmd.dev.hq.hiiir' // preview
   };
 
   chrome.cookies.getAll(options,function(data) {
@@ -65,7 +66,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var token = urlParams[0].replace("current_addrafts?access_token=", "");
   var businessId = urlParams[2].replace("__business_id=", "");
   var adAccountId = params[4].replace("act_", "");
-  currentAddraftsParams.token = token;
+  currentAddraftsParams.peAccessToken = token;
   currentAddraftsParams.businessId = businessId;
   currentAddraftsParams.adAccountId = adAccountId;
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
