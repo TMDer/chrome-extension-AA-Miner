@@ -49,8 +49,8 @@ function isRememberMe(cookies) {
 
 function onMessageForCheckRememberMe(remeberMeStatus) {
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    switch(message){
-      case "checkRememberMe" :
+    switch(message) {
+      case "checkRememberMe":
         sendResponse(remeberMeStatus);
         break;
     }
