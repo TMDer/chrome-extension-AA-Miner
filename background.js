@@ -2,7 +2,6 @@ var currentAddraftsParams = {};
 var isLogin = false;
 var options = {
   domain : 'localhost'
-  // domain : 'pmd.dev.hq.hiiir' // preview
 };
 chrome.tabs.onUpdated.addListener(checkUrl);
 chrome.cookies.getAll(options,function(data) {
@@ -15,7 +14,6 @@ chrome.cookies.getAll(options,function(data) {
     return
   }
   isLogin = false;
-
 });
 
 function checkUrl(tabId, changeInfo, tab) {
@@ -35,7 +33,7 @@ function getDomain(url) {
   if(typeof match != "undefined" && null != match)
     host = match[1];
   return host;
-}
+};
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var params = details.url.split("/");
