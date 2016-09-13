@@ -51,17 +51,15 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     case "requestAdDraftParams":
       sendResponse({response: currentAddraftsParams});
       break;
-    case "checkRememberMe":
+    case "isLoginStatus":
       sendResponse(isLogin);
       break;
     case "loginSuccess":
+      isLogin = true;
       sendResponse(isLogin);
       break;
     case "logout":
       isLogin = false;
-      break;
-    case "inject":
-      sendResponse(isLogin);
       break;
   }
 });

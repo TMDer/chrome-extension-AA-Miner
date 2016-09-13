@@ -55,7 +55,7 @@ function sendAAMinerAPI(data) {
 };
 
 setInterval(function() {
-  chrome.runtime.sendMessage("inject", function(resMsg) {
+  chrome.runtime.sendMessage("isLoginStatus", function(resMsg) {
     if(pluginEnableStatus === false) {
       if(resMsg) {
         pluginEnableStatus = true;

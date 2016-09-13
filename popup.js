@@ -63,7 +63,7 @@ function initialLogoutButton() {
 };
 
 chrome.runtime.sendMessage(
-  "checkRememberMe", function(rememberMeStatus) {
+  "isLoginStatus", function(rememberMeStatus) {
     if(rememberMeStatus) {
       loginViewChange();
       return ;
