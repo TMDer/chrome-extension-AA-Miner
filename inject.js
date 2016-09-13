@@ -45,6 +45,7 @@ function sendAAMinerAPI(data) {
     if(statusDone === "success") {
       alert("AA Miner Update Success!");
       buttonClose.click();
+      location.reload();
     }
     else if(statusDone === "failed") {
       alert(msgDone.message + " 更新失敗！");

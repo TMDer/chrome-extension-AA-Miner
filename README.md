@@ -10,5 +10,8 @@ Chrome extension for AA Miner
 ├── inject.js                      # tab 頁面所要執行的 JS
 ├── jquery-2.0.0.min.js            # jQuery
 ├── manifest.json                  # 主要設定檔
+├── popup.css                      # 彈出視窗樣式
+├── popup.html                     # 彈出視窗 HTML
+├── popup.js                       # 彈出視窗 JS
 
 ```
