@@ -1,12 +1,8 @@
 var requestAdDraftParams = "";
-var domain = "http://localhost:1337"; // develop
+var domain = "http://localhost:1337";
 var pluginEnableStatus = false;
-// var domain = "http://pmd.dev.hq.hiiir"; // preview
-// var domain = "https://adminer.hiiir.com"; // production
-
 
 function changeButtonReviewChanges() {
-
   var buttonReviewChanges = document.getElementsByClassName("_2yak");
   buttonReviewChanges[0].style.backgroundColor = "red";
   buttonReviewChanges[0].addEventListener("click", function() {
@@ -68,4 +64,3 @@ setInterval(function() {
     }
   });
 }, 15000);
-

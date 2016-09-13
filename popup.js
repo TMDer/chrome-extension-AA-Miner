@@ -1,12 +1,5 @@
 var loginUrl = "http://localhost:1337/auth/signin/chromeExtension";
 var logoutUrl = "http://localhost:1337/auth/logout";
-
-// var loginUrl = "http://pmd.dev.hq.hiiir/auth/signin/chromeExtension";
-// var logoutUrl = "http://pmd.dev.hq.hiiir/auth/logout";
-
-// var loginUrl = "https://http://adminer.hiiir.com/auth/signin/chromeExtension";
-// var logoutUrl = "https://http://adminer.hiiir.com/auth/logout";
-
 var loginButton = null;
 var logoutButton = null;
 var usernameText = null;
@@ -50,7 +43,7 @@ function initialLoginButton() {
       warningMsg.text('Login Fail');
     });
   });
-}
+};
 
 function initialLogoutButton() {
   logoutButton.click(function() {
@@ -67,7 +60,7 @@ function initialLogoutButton() {
       warningMsg.text('Login Fail');
     });
   });
-}
+};
 
 chrome.runtime.sendMessage(
   "checkRememberMe", function(rememberMeStatus) {
@@ -88,7 +81,7 @@ function loginViewChange() {
   warningMsg.hide();
   loginButton.hide();
   logoutButton.show();
-}
+};
 
 function logoutViewChange() {
   usernameText.show();
@@ -98,7 +91,7 @@ function logoutViewChange() {
   warningMsg.hide();
   loginButton.show();
   logoutButton.hide();
-}
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   loginButton = $("#login");

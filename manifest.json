@@ -26,9 +26,7 @@
     "https://graph.facebook.com/*",
     "webRequest",
     "webRequestBlocking",
-    "http://localhost/*",
-    "http://pmd.dev.hq.hiiir/*",
-    "https://adminer.hiiir.com/*"
+    "http://localhost/*"
   ],
   "content_scripts": [
     {

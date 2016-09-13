@@ -1,21 +1,19 @@
 var currentAddraftsParams = {};
 var isLogin = false;
 var options = {
-  domain : 'localhost'
-  // domain : 'pmd.dev.hq.hiiir' // preview
+  domain : 'localhost';
 };
 chrome.tabs.onUpdated.addListener(checkUrl);
 chrome.cookies.getAll(options, function(data) {
   var rememberMeCookie = data.filter(
     function (info) {
-      return info.name === "remember_me"
+      return info.name === "remember_me";
     });
   if(rememberMeCookie.length > 0) {
     isLogin = true;
     return;
   }
   isLogin = false;
-
 });
 
 function checkUrl(tabId, changeInfo, tab) {
@@ -35,7 +33,7 @@ function getDomain(url) {
   if(typeof match != "undefined" && null != match)
     host = match[1];
   return host;
-}
+};
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var params = details.url.split("/");
