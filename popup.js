@@ -11,8 +11,9 @@ var loginButton = null;
 var logoutButton = null;
 var usernameText = null;
 var passwordText = null;
-var rememberMeText = null;
+var rememberMeCheckBox = null;
 var rememberMeLabel = null;
+var warningMsg = null;
 
 function getCurrentTabUrl(callback) {
   initialLoginButton();
@@ -37,13 +38,14 @@ function initialLoginButton() {
     })
     .done(function(msg) {
       if(msg.status === "success") {
+        chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
         loginViewChange();
         return;
       }
       warningMsg.show();
       warningMsg.text('User is not existed or password is not correct.');
     })
-    .fail(function(error) {
+    .fail(function() {
       warningMsg.show();
       warningMsg.text('Login Fail');
     });
@@ -56,10 +58,11 @@ function initialLogoutButton() {
       method: "POST",
       url: logoutUrl
     })
-    .done(function(msg) {
+    .done(function() {
+      chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
     })
-    .fail(function(error) {
+    .fail(function() {
       warningMsg.show();
       warningMsg.text('Login Fail');
     });

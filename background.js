@@ -57,4 +57,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   if(message === "checkRememberMe") {
     sendResponse(isLogin);
   }
+
+  if(message === "loginSuccess") {
+    isLogin = true;
+  }
+
+  if(message === "logout") {
+    isLogin = false;
+  }
 });
