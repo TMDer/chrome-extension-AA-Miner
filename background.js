@@ -5,14 +5,14 @@ var options = {
   // domain : 'pmd.dev.hq.hiiir' // preview
 };
 chrome.tabs.onUpdated.addListener(checkUrl);
-chrome.cookies.getAll(options,function(data) {
+chrome.cookies.getAll(options, function(data) {
   var rememberMeCookie = data.filter(
     function (info) {
       return info.name === "remember_me"
     });
   if(rememberMeCookie.length > 0) {
     isLogin = true;
-    return
+    return;
   }
   isLogin = false;
 
@@ -49,24 +49,21 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  if(message === "addraftParams") {
-    sendResponse({response: currentAddraftsParams});
-  }
-
-  if(message === "checkRememberMe") {
-    sendResponse(isLogin);
-  }
-
-  if(message === "loginSuccess") {
-    isLogin = true;
-    sendResponse(isLogin);
-  }
-
-  if(message === "logout") {
-    isLogin = false;
-  }
-
-  if(message === "inject") {
-    sendResponse(isLogin);
+  switch(message){
+    case "requestAdDraftParams":
+      sendResponse({response: currentAddraftsParams});
+      break;
+    case "checkRememberMe":
+      sendResponse(isLogin);
+      break;
+    case "loginSuccess":
+      sendResponse(isLogin);
+      break;
+    case "logout":
+      isLogin = false;
+      break;
+    case "inject":
+      sendResponse(isLogin);
+      break;
   }
 });

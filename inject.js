@@ -1,4 +1,4 @@
-var addraftParams = "";
+var requestAdDraftParams = "";
 var domain = "http://localhost:1337"; // develop
 var pluginEnableStatus = false;
 // var domain = "http://pmd.dev.hq.hiiir"; // preview
@@ -29,9 +29,9 @@ function changeButtonContinue() {
 };
 
 function requestAddraftParams() {
-  chrome.runtime.sendMessage("addraftParams", function(data) {
-    addraftParams = data.response;
-    sendAAMinerAPI(addraftParams);
+  chrome.runtime.sendMessage("requestAdDraftParams", function(data) {
+    requestAdDraftParams = data.response;
+    sendAAMinerAPI(requestAdDraftParams);
   });
 };
 
@@ -60,8 +60,8 @@ function sendAAMinerAPI(data) {
 
 setInterval(function() {
   chrome.runtime.sendMessage("inject", function(resMsg) {
-    if(pluginEnableStatus === false){
-      if(resMsg){
+    if(pluginEnableStatus === false) {
+      if(resMsg) {
         pluginEnableStatus = true;
         changeButtonReviewChanges();
       }
