@@ -40,6 +40,7 @@ function initialLoginButton() {
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
         loginViewChange();
+        closePopupView();
         return;
       }
       warningMsg.show();
@@ -52,6 +53,17 @@ function initialLoginButton() {
   });
 }
 
+function reloadContentView() {
+  var execReload = 'location.reload()';
+  chrome.tabs.executeScript({
+    code: execReload
+  });
+}
+
+function closePopupView() {
+  window.close();
+}
+
 function initialLogoutButton() {
   logoutButton.click(function() {
     $.ajax( {
@@ -61,6 +73,8 @@ function initialLogoutButton() {
     .done(function() {
       chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
+      reloadContentView();
+      closePopupView();
     })
     .fail(function() {
       warningMsg.show();
@@ -100,6 +114,14 @@ function logoutViewChange() {
   logoutButton.hide();
 }
 
+function bindEnterKey() {
+  $(document).keypress(function (e) {
+    if (e.which == 13) {
+      loginButton.click();
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   loginButton = $("#login");
   logoutButton = $("#logout");
@@ -108,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
   rememberMeCheckBox = $("input[name='remember_me']");
   rememberMeLabel = $("Label[for='rememberMe']");
   warningMsg = $(".warning");
+
+  bindEnterKey();
 
   getCurrentTabUrl(function() {
 
