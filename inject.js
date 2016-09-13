@@ -6,7 +6,7 @@ var domain = "http://localhost:1337"; // develop
 
 function changeButtonReviewChanges() {
   var buttonReviewChanges = document.getElementsByClassName("_2yak");
-  buttonReviewChanges[0].style.backgroundColor = "red";
+  buttonReviewChanges[0].style.backgroundColor = "#E74C3C";
   buttonReviewChanges[0].addEventListener("click", function() {
     setTimeout(function() {
       changeButtonContinue();
