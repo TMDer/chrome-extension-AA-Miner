@@ -1,8 +1,6 @@
-var addraftParams = "";
-var domain = "http://localhost:1337"; // develop
-// var domain = "http://pmd.dev.hq.hiiir"; // preview
-// var domain = "https://adminer.hiiir.com"; // production
-
+var requestAdDraftParams = "";
+var domain = "http://localhost:1337";
+var pluginEnableStatus = false;
 
 function changeButtonReviewChanges() {
   var buttonReviewChanges = document.getElementsByClassName("_2yak");
@@ -10,7 +8,7 @@ function changeButtonReviewChanges() {
   buttonReviewChanges[0].addEventListener("click", function() {
     setTimeout(function() {
       changeButtonContinue();
-    }, 1000);
+    }, 1500);
   });
 };
 
@@ -19,7 +17,7 @@ function changeButtonContinue() {
   var createDom = document.createElement("button");
   var parentDom = originButtonContinue.parentNode;
   createDom.id = "updatefromPE";
-  createDom.innerText = "AA Miner Continue"
+  createDom.innerText = "AA Miner Continue";
   createDom.style.display = "inline-block";
   originButtonContinue.style.display = "none";
   parentDom.appendChild(createDom);
@@ -27,9 +25,9 @@ function changeButtonContinue() {
 };
 
 function requestAddraftParams() {
-  chrome.runtime.sendMessage("addraftParams", function(data) {
-    addraftParams = data.response;
-    sendAAMinerAPI(addraftParams);
+  chrome.runtime.sendMessage("requestAdDraftParams", function(data) {
+    requestAdDraftParams = data.response;
+    sendAAMinerAPI(requestAdDraftParams);
   });
 };
 
@@ -56,6 +54,13 @@ function sendAAMinerAPI(data) {
   });
 };
 
-setTimeout(function() {
-  changeButtonReviewChanges();
+setInterval(function() {
+  chrome.runtime.sendMessage("isLoginStatus", function(resMsg) {
+    if(pluginEnableStatus === false) {
+      if(resMsg) {
+        pluginEnableStatus = true;
+        changeButtonReviewChanges();
+      }
+    }
+  });
 }, 15000);

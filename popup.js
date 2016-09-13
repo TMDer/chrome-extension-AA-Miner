@@ -1,18 +1,12 @@
 var loginUrl = "http://localhost:1337/auth/signin/chromeExtension";
 var logoutUrl = "http://localhost:1337/auth/logout";
-
-// var loginUrl = "http://pmd.dev.hq.hiiir/auth/signin/chromeExtension";
-// var logoutUrl = "http://pmd.dev.hq.hiiir/auth/logout";
-
-// var loginUrl = "https://http://adminer.hiiir.com/auth/signin/chromeExtension";
-// var logoutUrl = "https://http://adminer.hiiir.com/auth/logout";
-
 var loginButton = null;
 var logoutButton = null;
 var usernameText = null;
 var passwordText = null;
-var rememberMeText = null;
+var rememberMeCheckBox = null;
 var rememberMeLabel = null;
+var warningMsg = null;
 
 function getCurrentTabUrl(callback) {
   initialLoginButton();
@@ -37,18 +31,19 @@ function initialLoginButton() {
     })
     .done(function(msg) {
       if(msg.status === "success") {
+        chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
         loginViewChange();
         return;
       }
       warningMsg.show();
       warningMsg.text('User is not existed or password is not correct.');
     })
-    .fail(function(error) {
+    .fail(function() {
       warningMsg.show();
       warningMsg.text('Login Fail');
     });
   });
-}
+};
 
 function initialLogoutButton() {
   logoutButton.click(function() {
@@ -56,18 +51,19 @@ function initialLogoutButton() {
       method: "POST",
       url: logoutUrl
     })
-    .done(function(msg) {
+    .done(function() {
+      chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
     })
-    .fail(function(error) {
+    .fail(function() {
       warningMsg.show();
       warningMsg.text('Login Fail');
     });
   });
-}
+};
 
 chrome.runtime.sendMessage(
-  "checkRememberMe", function(rememberMeStatus) {
+  "isLoginStatus", function(rememberMeStatus) {
     if(rememberMeStatus) {
       loginViewChange();
       return ;
@@ -85,7 +81,7 @@ function loginViewChange() {
   warningMsg.hide();
   loginButton.hide();
   logoutButton.show();
-}
+};
 
 function logoutViewChange() {
   usernameText.show();
@@ -95,7 +91,7 @@ function logoutViewChange() {
   warningMsg.hide();
   loginButton.show();
   logoutButton.hide();
-}
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   loginButton = $("#login");
