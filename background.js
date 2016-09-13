@@ -16,7 +16,6 @@ chrome.cookies.getAll(options,function(data) {
   }
   isLogin = false;
 
-  // todo phoebe 接 inject
 });
 
 function checkUrl(tabId, changeInfo, tab) {
@@ -60,9 +59,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
   if(message === "loginSuccess") {
     isLogin = true;
+    sendResponse(isLogin);
   }
 
   if(message === "logout") {
     isLogin = false;
+  }
+
+  if(message === "inject") {
+    sendResponse(isLogin);
   }
 });

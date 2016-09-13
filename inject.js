@@ -1,16 +1,18 @@
 var addraftParams = "";
 var domain = "http://localhost:1337"; // develop
+var pluginEnableStatus = false;
 // var domain = "http://pmd.dev.hq.hiiir"; // preview
 // var domain = "https://adminer.hiiir.com"; // production
 
 
 function changeButtonReviewChanges() {
+
   var buttonReviewChanges = document.getElementsByClassName("_2yak");
   buttonReviewChanges[0].style.backgroundColor = "red";
   buttonReviewChanges[0].addEventListener("click", function() {
     setTimeout(function() {
       changeButtonContinue();
-    }, 1000);
+    }, 1500);
   });
 };
 
@@ -19,7 +21,7 @@ function changeButtonContinue() {
   var createDom = document.createElement("button");
   var parentDom = originButtonContinue.parentNode;
   createDom.id = "updatefromPE";
-  createDom.innerText = "AA Miner Continue"
+  createDom.innerText = "AA Miner Continue";
   createDom.style.display = "inline-block";
   originButtonContinue.style.display = "none";
   parentDom.appendChild(createDom);
@@ -56,6 +58,14 @@ function sendAAMinerAPI(data) {
   });
 };
 
-setTimeout(function() {
-  changeButtonReviewChanges();
+setInterval(function() {
+  chrome.runtime.sendMessage("inject", function(resMsg) {
+    if(pluginEnableStatus === false){
+      if(resMsg){
+        pluginEnableStatus = true;
+        changeButtonReviewChanges();
+      }
+    }
+  });
 }, 15000);
+
