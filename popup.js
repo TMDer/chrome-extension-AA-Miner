@@ -36,27 +36,35 @@ function initialLoginButton() {
       }
     })
     .done(function(msg) {
+      removeMask(body);
+
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
+        initAAMinerReviewChangesBtn();
         loginViewChange();
         closePopupView();
-        removeMask(body);
         return;
       }
       warningMsg.show();
-      warningMsg.text('User is not existed or password is not correct.');
+      warningMsg.text("User is not existed or password is not correct.");
     })
     .fail(function() {
+      removeMask(body);
       warningMsg.show();
-      warningMsg.text('Login Fail');
+      warningMsg.text("Login failed");
     });
   });
 };
 
 function reloadContentView() {
-  var execReload = 'location.reload()';
   chrome.tabs.executeScript({
-    code: execReload
+    code: "location.reload()"
+  });
+}
+
+function initAAMinerReviewChangesBtn() {
+  chrome.tabs.executeScript({
+    code: "initAAMinerReviewChangesBtn()"
   });
 }
 
@@ -84,8 +92,9 @@ function initialLogoutButton() {
       removeMask(body);
     })
     .fail(function() {
+      removeMask(body);
       warningMsg.show();
-      warningMsg.text('Login Fail');
+      warningMsg.text("Logout failed");
     });
   });
 };
@@ -129,7 +138,7 @@ function bindEnterKey() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
   loginButton = $("#login");
   logoutButton = $("#logout");
   usernameText = $("input[name='username']");

@@ -1,20 +1,26 @@
 var requestAdDraftParams = "";
 var domain = "http://localhost:1337";
-var pluginEnableStatus = false;
 var aaMinerContinueButton = null;
 
-function changeButtonReviewChanges() {
+function initAAMinerReviewChangesBtn() {
   var buttonReviewChanges = document.getElementsByClassName("_2yak");
-  buttonReviewChanges[0].style.backgroundColor = "#E74C3C";
-  buttonReviewChanges[0].addEventListener("click", function() {
-    setTimeout(function() {
-      changeButtonContinue();
-    }, 1500);
-  });
-};
+  if (buttonReviewChanges.length === 0)
+    return setTimeout(function() {initAAMinerReviewChangesBtn();}, 5000);
 
-function changeButtonContinue() {
-  var originButtonContinue = document.getElementsByClassName("selected")[2];
+  var buttonReviewChange = buttonReviewChanges[0];
+  buttonReviewChange.style.backgroundColor = "#E74C3C";
+  buttonReviewChange.addEventListener("click", function() {
+    initAAMinerContinueBtn();
+  });
+}
+
+function initAAMinerContinueBtn() {
+  var eles = document.getElementsByClassName("selected");
+
+  if (eles.length < 3)
+    return setTimeout(function() {initAAMinerContinueBtn();}, 700);
+
+  var originButtonContinue = eles[2];
   var createDom = document.createElement("button");
   var parentDom = originButtonContinue.parentNode;
   createDom.id = "updatefromPE";
@@ -24,14 +30,14 @@ function changeButtonContinue() {
   parentDom.appendChild(createDom);
   createDom.addEventListener("click", requestAddraftParams);
   aaMinerContinueButton = createDom;
-};
+}
 
 function requestAddraftParams() {
   chrome.runtime.sendMessage("requestAdDraftParams", function(data) {
     requestAdDraftParams = data.response;
     sendAAMinerAPI(requestAdDraftParams);
   });
-};
+}
 
 function sendAAMinerAPI(data) {
   addMask(aaMinerContinueButton);
@@ -56,15 +62,19 @@ function sendAAMinerAPI(data) {
   .fail(function() {
     alert("伺服器出現錯誤，請稍候再試！");
   });
-};
+}
 
-setInterval(function() {
-  chrome.runtime.sendMessage("isLoginStatus", function(resMsg) {
-    if(pluginEnableStatus === false) {
-      if(resMsg) {
-        pluginEnableStatus = true;
-        changeButtonReviewChanges();
-      }
-    }
+
+
+(function(){
+
+  chrome.runtime.sendMessage("isLoginStatus", function(isLogin) {
+
+    if (!isLogin)
+      return;
+
+    initAAMinerReviewChangesBtn();
+
   });
-}, 15000);
+
+}());
