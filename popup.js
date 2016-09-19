@@ -12,7 +12,7 @@ function getCurrentTabUrl(callback) {
   initialLoginButton();
   initialLogoutButton();
   callback();
-};
+}
 
 function initialLoginButton() {
   loginButton.click(function() {
@@ -44,7 +44,7 @@ function initialLoginButton() {
       warningMsg.text('Login Fail');
     });
   });
-};
+}
 
 function reloadContentView() {
   var execReload = 'location.reload()';
@@ -71,10 +71,10 @@ function initialLogoutButton() {
     })
     .fail(function() {
       warningMsg.show();
-      warningMsg.text('Login Fail');
+      warningMsg.text('Logout Fail');
     });
   });
-};
+}
 
 chrome.runtime.sendMessage(
   "isLoginStatus", function(rememberMeStatus) {
@@ -95,7 +95,7 @@ function loginViewChange() {
   warningMsg.hide();
   loginButton.hide();
   logoutButton.show();
-};
+}
 
 function logoutViewChange() {
   usernameText.show();
@@ -105,7 +105,7 @@ function logoutViewChange() {
   warningMsg.hide();
   loginButton.show();
   logoutButton.hide();
-};
+}
 
 function bindEnterKey() {
   $(document).keypress(function (e) {
