@@ -9,9 +9,11 @@ chrome.cookies.onChanged.addListener(function(data) {
   if(data.cookie.name === "remember_me"){
     if(data.removed === false){
       setIsLogin(true);
+      reloadContentView();
       return;
     }
     setIsLogin(false);
+    reloadContentView();
   }
 });
 
@@ -70,6 +72,13 @@ function getDomain(url) {
   if(typeof match != "undefined" && null != match)
     host = match[1];
   return host;
+}
+
+function reloadContentView() {
+  var execReload = 'location.reload()';
+  chrome.tabs.executeScript({
+    code: execReload
+  });
 }
 
 function getRememberMeCookie(data) {
