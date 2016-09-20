@@ -2,23 +2,32 @@ var requestAdDraftParams = "";
 var domain = "http://localhost:1337";
 var aaMinerContinueButton = null;
 
-function initAAMinerReviewChangesBtn() {
-  var buttonReviewChanges = document.getElementsByClassName("_2yak");
-  if (buttonReviewChanges.length === 0)
-    return setTimeout(function() {initAAMinerReviewChangesBtn();}, 5000);
 
-  var buttonReviewChange = buttonReviewChanges[0];
-  buttonReviewChange.style.backgroundColor = "#E74C3C";
-  buttonReviewChange.addEventListener("click", function() {
-    initAAMinerContinueBtn();
-  });
+function getPEReviewChangesButton() {
+  return document.getElementsByClassName("_2yak")[0];
+}
+
+function reloadPEReviewChangesBtn() {
+  var peReviewChangesButton = getPEReviewChangesButton();
+  peReviewChangesButton.removeEventListener("click", initAAMinerContinueBtn);
+  peReviewChangesButton.removeAttribute("style");
+}
+
+function initAAMinerReviewChangesBtn() {
+  var peReviewChangesButton = getPEReviewChangesButton();
+
+  if (!peReviewChangesButton)
+    return setTimeout(initAAMinerReviewChangesBtn, 5000);
+
+  peReviewChangesButton.style.backgroundColor = "#E74C3C";
+  peReviewChangesButton.addEventListener("click", initAAMinerContinueBtn);
 }
 
 function initAAMinerContinueBtn() {
   var eles = document.getElementsByClassName("selected");
 
   if (eles.length < 3)
-    return setTimeout(function() {initAAMinerContinueBtn();}, 700);
+    return setTimeout(initAAMinerContinueBtn, 700);
 
   var originButtonContinue = eles[2];
   var createDom = document.createElement("button");

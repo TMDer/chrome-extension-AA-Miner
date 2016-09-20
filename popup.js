@@ -56,9 +56,9 @@ function initialLoginButton() {
   });
 };
 
-function reloadContentView() {
+function reloadPEReviewChangesBtn() {
   chrome.tabs.executeScript({
-    code: "location.reload()"
+    code: "reloadPEReviewChangesBtn()"
   });
 }
 
@@ -87,7 +87,7 @@ function initialLogoutButton() {
     .done(function() {
       chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
-      reloadContentView();
+      reloadPEReviewChangesBtn();
       closePopupView();
       removeMask(body);
     })
