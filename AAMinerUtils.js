@@ -4,10 +4,12 @@ function removeClass(element, className) {
 
 function addClass(element, className) {
   element.className += className;
+  element.disabled = true;
 }
 
 function removeMask(element) {
   removeClass(element, "loading-mask");
+  element.removeAttribute("disabled");
 }
 
 function addMask(element) {

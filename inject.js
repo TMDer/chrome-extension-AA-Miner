@@ -1,35 +1,37 @@
 var requestAdDraftParams = "";
 var domain = "http://localhost:1337";
 var aaMinerContinueButton = null;
+var peButtonOriginColor = null;
 
 
 function getPEReviewChangesButton() {
   return document.getElementsByClassName("_2yak")[0];
 }
 
-function reloadPEReviewChangesBtn() {
+function disableAAChangesBtn() {
   var peReviewChangesButton = getPEReviewChangesButton();
-  peReviewChangesButton.removeEventListener("click", initAAMinerContinueBtn);
-  peReviewChangesButton.removeAttribute("style");
+  peReviewChangesButton.removeEventListener("click", initAAContinueBtn);
+  peReviewChangesButton.style.backgroundColor = peButtonOriginColor;
 }
 
-function initAAMinerReviewChangesBtn() {
+function enableAAChangesBtn() {
   var peReviewChangesButton = getPEReviewChangesButton();
 
   if (!peReviewChangesButton)
-    return setTimeout(initAAMinerReviewChangesBtn, 5000);
+    return setTimeout(enableAAChangesBtn, 5000);
 
+  peButtonOriginColor = peReviewChangesButton.style.backgroundColor;
   peReviewChangesButton.style.backgroundColor = "#E74C3C";
-  peReviewChangesButton.addEventListener("click", initAAMinerContinueBtn);
+  peReviewChangesButton.addEventListener("click", initAAContinueBtn);
 }
 
-function initAAMinerContinueBtn() {
-  var eles = document.getElementsByClassName("selected");
+function initAAContinueBtn() {
+  var elements = document.getElementsByClassName("selected");
 
-  if (eles.length < 3)
-    return setTimeout(initAAMinerContinueBtn, 700);
+  if (elements.length < 3)
+    return setTimeout(initAAContinueBtn, 700);
 
-  var originButtonContinue = eles[2];
+  var originButtonContinue = elements[2];
   var createDom = document.createElement("button");
   var parentDom = originButtonContinue.parentNode;
   createDom.id = "updatefromPE";
@@ -58,7 +60,6 @@ function sendAAMinerAPI(data) {
   .done(function(msgDone) {
     var statusDone = msgDone.status;
     var buttonClose = document.getElementsByClassName("layerCancel")[0];
-    removeMask(aaMinerContinueButton);
     if(statusDone === "success") {
       alert("AA Miner Update Success!");
       buttonClose.click();
@@ -66,10 +67,12 @@ function sendAAMinerAPI(data) {
     }
     else if(statusDone === "failed") {
       alert(msgDone.message + " 更新失敗！");
+      removeMask(aaMinerContinueButton);
     }
   })
   .fail(function() {
     alert("伺服器出現錯誤，請稍候再試！");
+    removeMask(aaMinerContinueButton);
   });
 }
 
@@ -82,7 +85,7 @@ function sendAAMinerAPI(data) {
     if (!isLogin)
       return;
 
-    initAAMinerReviewChangesBtn();
+    enableAAChangesBtn();
 
   });
 

@@ -36,35 +36,34 @@ function initialLoginButton() {
       }
     })
     .done(function(msg) {
-      removeMask(body);
-
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
-        initAAMinerReviewChangesBtn();
+        enableAAChangesBtn();
         loginViewChange();
         closePopupView();
         return;
       }
       warningMsg.show();
       warningMsg.text("User is not existed or password is not correct.");
+      removeMask(body);
     })
     .fail(function() {
-      removeMask(body);
       warningMsg.show();
       warningMsg.text("Login failed");
+      removeMask(body);
     });
   });
 };
 
-function reloadPEReviewChangesBtn() {
+function disableAAChangesBtn() {
   chrome.tabs.executeScript({
-    code: "reloadPEReviewChangesBtn()"
+    code: "disableAAChangesBtn()"
   });
 }
 
-function initAAMinerReviewChangesBtn() {
+function enableAAChangesBtn() {
   chrome.tabs.executeScript({
-    code: "initAAMinerReviewChangesBtn()"
+    code: "enableAAChangesBtn()"
   });
 }
 
@@ -87,14 +86,13 @@ function initialLogoutButton() {
     .done(function() {
       chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
-      reloadPEReviewChangesBtn();
+      disableAAChangesBtn();
       closePopupView();
-      removeMask(body);
     })
     .fail(function() {
-      removeMask(body);
       warningMsg.show();
       warningMsg.text("Logout failed");
+      removeMask(body);
     });
   });
 };
