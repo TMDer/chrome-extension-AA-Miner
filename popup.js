@@ -71,7 +71,7 @@ function initialLogoutButton() {
     })
     .fail(function() {
       $warningMsg.show();
-      $warningMsg.text('Login Fail');
+      $warningMsg.text('Logout Fail');
     });
   });
 }
