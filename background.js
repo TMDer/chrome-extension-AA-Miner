@@ -4,36 +4,25 @@ var options = {
   domain: 'localhost'
 };
 chrome.tabs.onUpdated.addListener(checkUrl);
-chrome.cookies.getAll(options, function(data) {
-  var rememberMeCookie = data.filter(
-    function (info) {
-      return info.name === "remember_me";
-    });
-  if(rememberMeCookie.length > 0) {
-    isLogin = true;
-    return;
+
+chrome.cookies.onChanged.addListener(function(data) {
+  if(data.cookie.name === "remember_me") {
+    if(data.removed === false) {
+      setIsLogin(true);
+      return;
+    }
+    setIsLogin(false);
   }
-  isLogin = false;
 });
 
-function checkUrl(tabId, changeInfo, tab) {
-  if(getDomain(tab.url).toLowerCase() === "business.facebook.com") {
-    chrome.browserAction.enable(tabId);
+chrome.cookies.getAll(options, function(data) {
+  var rememberMeCookie = getRememberMeCookie(data);
+  if(rememberMeCookie.length > 0) {
+    setIsLogin(true);
     return;
   }
-  chrome.browserAction.disable(tabId);
-};
-
-function getDomain(url) {
-  var host = "null";
-  if(typeof url == "undefined" || null == url)
-    url = window.location.href;
-  var regex = /.*\:\/\/([^\/]*).*/;
-  var match = url.match(regex);
-  if(typeof match != "undefined" && null != match)
-    host = match[1];
-  return host;
-};
+  setIsLogin(false);
+});
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
   var params = details.url.split("/");
@@ -47,7 +36,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  switch(message){
+  switch(message) {
     case "requestAdDraftParams":
       sendResponse({response: currentAddraftsParams});
       break;
@@ -55,11 +44,40 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       sendResponse(isLogin);
       break;
     case "loginSuccess":
-      isLogin = true;
+      setIsLogin(true);
       sendResponse(isLogin);
       break;
     case "logout":
-      isLogin = false;
+      setIsLogin(false);
       break;
   }
 });
+
+function checkUrl(tabId, changeInfo, tab) {
+  if(getDomain(tab.url).toLowerCase() === "business.facebook.com") {
+    chrome.browserAction.enable(tabId);
+    return;
+  }
+  chrome.browserAction.disable(tabId);
+}
+
+function getDomain(url) {
+  var host = "null";
+  if(typeof url == "undefined" || null == url)
+    url = window.location.href;
+  var regex = /.*\:\/\/([^\/]*).*/;
+  var match = url.match(regex);
+  if(typeof match != "undefined" && null != match)
+    host = match[1];
+  return host;
+}
+
+function getRememberMeCookie(data) {
+  return data.filter(function (info) {
+    return info.name === "remember_me";
+  });
+}
+
+function setIsLogin(boolean) {
+  isLogin = boolean;
+}

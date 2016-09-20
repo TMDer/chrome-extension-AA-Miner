@@ -10,7 +10,7 @@ function changeButtonReviewChanges() {
       changeButtonContinue();
     }, 1500);
   });
-};
+}
 
 function changeButtonContinue() {
   var originButtonContinue = document.getElementsByClassName("selected")[1];
@@ -22,14 +22,14 @@ function changeButtonContinue() {
   originButtonContinue.style.display = "none";
   parentDom.appendChild(createDom);
   createDom.addEventListener("click", requestAddraftParams);
-};
+}
 
 function requestAddraftParams() {
   chrome.runtime.sendMessage("requestAdDraftParams", function(data) {
     requestAdDraftParams = data.response;
     sendAAMinerAPI(requestAdDraftParams);
   });
-};
+}
 
 function sendAAMinerAPI(data) {
   $.ajax({
@@ -37,22 +37,22 @@ function sendAAMinerAPI(data) {
     url: domain + "/chromeExtension/updateFromPE",
     data: data
   })
-  .done(function(msgDone) {
-    var statusDone = msgDone.status;
-    var buttonClose = document.getElementsByClassName("layerCancel")[0];
-    if(statusDone === "success") {
-      alert("AA Miner Update Success!");
-      buttonClose.click();
-      location.reload();
-    }
-    else if(statusDone === "failed") {
-      alert(msgDone.message + " 更新失敗！");
-    }
-  })
-  .fail(function() {
-    alert("伺服器出現錯誤，請稍候再試！");
-  });
-};
+    .done(function(msgDone) {
+      var statusDone = msgDone.status;
+      var buttonClose = document.getElementsByClassName("layerCancel")[0];
+      if(statusDone === "success") {
+        alert("AA Miner Update Success!");
+        buttonClose.click();
+        location.reload();
+      }
+      else if(statusDone === "failed") {
+        alert(msgDone.message + " 更新失敗！");
+      }
+    })
+    .fail(function() {
+      alert("伺服器出現錯誤，請稍候再試！");
+    });
+}
 
 setInterval(function() {
   chrome.runtime.sendMessage("isLoginStatus", function(resMsg) {
