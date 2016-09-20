@@ -9,7 +9,6 @@ chrome.cookies.onChanged.addListener(function(data) {
   if(data.cookie.name === "remember_me") {
     if(data.removed === false) {
       setIsLogin(true);
-      reloadContentView();
       return;
     }
     setIsLogin(false);
