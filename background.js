@@ -1,7 +1,7 @@
 var currentAddraftsParams = {};
 var isLogin = false;
 var options = {
-  domain : 'localhost'
+  domain: 'localhost'
 };
 chrome.tabs.onUpdated.addListener(checkUrl);
 
