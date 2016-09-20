@@ -36,12 +36,12 @@ function initialLoginButton() {
         closePopupView();
         return;
       }
-      $warningMsg.show();
       $warningMsg.text('User is not existed or password is not correct.');
+      $warningMsg.show();
     })
     .fail(function() {
-      $warningMsg.show();
       $warningMsg.text('Login Fail');
+      $warningMsg.show();
     });
   });
 }
@@ -70,8 +70,8 @@ function initialLogoutButton() {
       closePopupView();
     })
     .fail(function() {
-      $warningMsg.show();
       $warningMsg.text('Logout Fail');
+      $warningMsg.show();
     });
   });
 }
