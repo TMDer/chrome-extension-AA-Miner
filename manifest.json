@@ -33,16 +33,11 @@
       "matches": [
         "https://business.facebook.com/ads/manage/powereditor/*"
       ],
-      "css": [
-        "inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "https://business.facebook.com/ads/manage/powereditor/*"
-      ],
       "js": [
-        "jquery-2.0.0.min.js","inject.js"
+        "jquery-2.0.0.min.js", "AAMinerUtils.js", "inject.js"
+      ],
+      "css": [
+        "inject.css", "loading-mask.css"
       ],
       "run_at": "document_end"
     }

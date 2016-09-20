@@ -9,6 +9,7 @@ var $warningLoginMsg = null;
 var $warningLogoutMsg = null;
 var $user = null;
 var $view = null;
+var body = document.body;
 
 function getCurrentTabUrl(callback) {
   initialLoginButton();
@@ -18,6 +19,9 @@ function getCurrentTabUrl(callback) {
 
 function initialLoginButton() {
   $loginButton.click(function() {
+    
+    addMask(body);
+    
     var username = $usernameText.val();
     var password = $passwordText.val();
     var rememberMe = $rememberMeCheckBox.val();
@@ -35,24 +39,32 @@ function initialLoginButton() {
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
         $user.text("Hi, " + msg.user);
+        enableAAChangesBtn();
         loginViewChange();
         closePopupView();
         return;
       }
-      $warningLoginMsg.text('User is not existed or password is not correct.');
+      $warningLoginMsg.text("User is not existed or password is not correct.");
       $warningLoginMsg.addClass("active");
+      removeMask(body);
     })
     .fail(function() {
-      $warningLoginMsg.text('Login Fail');
+      $warningLoginMsg.text("Login Failed");
       $warningLoginMsg.addClass("active");
+      removeMask(body);
     });
   });
 }
 
-function reloadContentView() {
-  var execReload = 'location.reload()';
+function disableAAChangesBtn() {
   chrome.tabs.executeScript({
-    code: execReload
+    code: "disableAAChangesBtn()"
+  });
+}
+
+function enableAAChangesBtn() {
+  chrome.tabs.executeScript({
+    code: "enableAAChangesBtn()"
   });
 }
 
@@ -62,6 +74,9 @@ function closePopupView() {
 
 function initialLogoutButton() {
   $logoutButton.click(function() {
+    
+    addMask(body);
+    
     $.ajax( {
       method: "POST",
       url: logoutUrl
@@ -69,12 +84,13 @@ function initialLogoutButton() {
     .done(function() {
       chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
-      reloadContentView();
+      disableAAChangesBtn();
       closePopupView();
     })
     .fail(function() {
-      $warningLogoutMsg.text('Logout Fail');
+      $warningLogoutMsg.text("Logout Failed");
       $warningLogoutMsg.addClass("active");
+      removeMask(body);
     });
   });
 }
@@ -85,9 +101,10 @@ chrome.runtime.sendMessage(
       loginViewChange();
       return ;
     }
+
     logoutViewChange();
   }
-)
+);
 
 function loginViewChange() {
   $view.addClass("is-login");
@@ -107,7 +124,7 @@ function bindEnterKey() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
   $loginButton = $("#login");
   $logoutButton = $("#logout");
   $usernameText = $("input[name='username']");
