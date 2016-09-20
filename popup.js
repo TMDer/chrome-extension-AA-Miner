@@ -7,6 +7,7 @@ var $passwordText = null;
 var $rememberMeCheckBox = null;
 var $warningLoginMsg = null;
 var $warningLogoutMsg = null;
+var $user = null;
 var $view = null;
 
 function getCurrentTabUrl(callback) {
@@ -33,6 +34,7 @@ function initialLoginButton() {
     .done(function(msg) {
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
+        $user.text("Hi, " + msg.user);
         loginViewChange();
         closePopupView();
         return;
@@ -113,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
   $rememberMeCheckBox = $("input[name='remember_me']");
   $warningLoginMsg = $(".warning-login");
   $warningLogoutMsg = $(".warning-logout");
+  $user = $(".user");
   $view = $("#view");
   bindEnterKey();
   getCurrentTabUrl(function() {
