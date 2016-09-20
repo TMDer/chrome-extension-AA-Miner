@@ -6,8 +6,8 @@ var options = {
 chrome.tabs.onUpdated.addListener(checkUrl);
 
 chrome.cookies.onChanged.addListener(function(data) {
-  if(data.cookie.name === "remember_me"){
-    if(data.removed === false){
+  if(data.cookie.name === "remember_me") {
+    if(data.removed === false) {
       setIsLogin(true);
       reloadContentView();
       return;
@@ -38,7 +38,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  switch(message){
+  switch(message) {
     case "requestAdDraftParams":
       sendResponse({response: currentAddraftsParams});
       break;
@@ -87,6 +87,6 @@ function getRememberMeCookie(data) {
   });
 }
 
-function setIsLogin(boolean){
+function setIsLogin(boolean) {
   isLogin = boolean;
 }
