@@ -1,12 +1,14 @@
 var loginUrl = "http://localhost:1337/auth/signin/chromeExtension";
 var logoutUrl = "http://localhost:1337/auth/logout";
-var loginButton = null;
-var logoutButton = null;
-var usernameText = null;
-var passwordText = null;
-var rememberMeCheckBox = null;
-var rememberMeLabel = null;
-var warningMsg = null;
+var $loginButton = null;
+var $logoutButton = null;
+var $usernameText = null;
+var $passwordText = null;
+var $rememberMeCheckBox = null;
+var $warningLoginMsg = null;
+var $warningLogoutMsg = null;
+var $user = null;
+var $view = null;
 
 function getCurrentTabUrl(callback) {
   initialLoginButton();
@@ -15,10 +17,10 @@ function getCurrentTabUrl(callback) {
 }
 
 function initialLoginButton() {
-  loginButton.click(function() {
-    var username = usernameText.val();
-    var password = passwordText.val();
-    var rememberMe = rememberMeCheckBox.val();
+  $loginButton.click(function() {
+    var username = $usernameText.val();
+    var password = $passwordText.val();
+    var rememberMe = $rememberMeCheckBox.val();
 
     $.ajax( {
       method: "POST",
@@ -32,16 +34,17 @@ function initialLoginButton() {
     .done(function(msg) {
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
+        $user.text("Hi, " + msg.user);
         loginViewChange();
         closePopupView();
         return;
       }
-      warningMsg.show();
-      warningMsg.text('User is not existed or password is not correct.');
+      $warningLoginMsg.text('User is not existed or password is not correct.');
+      $warningLoginMsg.addClass("active");
     })
     .fail(function() {
-      warningMsg.show();
-      warningMsg.text('Login Fail');
+      $warningLoginMsg.text('Login Fail');
+      $warningLoginMsg.addClass("active");
     });
   });
 }
@@ -58,7 +61,7 @@ function closePopupView() {
 }
 
 function initialLogoutButton() {
-  logoutButton.click(function() {
+  $logoutButton.click(function() {
     $.ajax( {
       method: "POST",
       url: logoutUrl
@@ -70,8 +73,8 @@ function initialLogoutButton() {
       closePopupView();
     })
     .fail(function() {
-      warningMsg.show();
-      warningMsg.text('Logout Fail');
+      $warningLogoutMsg.text('Logout Fail');
+      $warningLogoutMsg.addClass("active");
     });
   });
 }
@@ -82,50 +85,39 @@ chrome.runtime.sendMessage(
       loginViewChange();
       return ;
     }
-
     logoutViewChange();
   }
-);
+)
 
 function loginViewChange() {
-  usernameText.hide();
-  passwordText.hide();
-  rememberMeCheckBox.hide();
-  rememberMeLabel.hide();
-  warningMsg.hide();
-  loginButton.hide();
-  logoutButton.show();
+  $view.addClass("is-login");
+  $warningLoginMsg.removeClass("active");
 }
 
 function logoutViewChange() {
-  usernameText.show();
-  passwordText.show();
-  rememberMeCheckBox.show();
-  rememberMeLabel.show();
-  warningMsg.hide();
-  loginButton.show();
-  logoutButton.hide();
+  $view.removeClass("is-login");
+  $warningLogoutMsg.removeClass("active");
 }
 
 function bindEnterKey() {
   $(document).keypress(function (e) {
     if (e.which == 13) {
-      loginButton.click();
+      $loginButton.click();
     }
   });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  loginButton = $("#login");
-  logoutButton = $("#logout");
-  usernameText = $("input[name='username']");
-  passwordText = $("input[name='password']");
-  rememberMeCheckBox = $("input[name='remember_me']");
-  rememberMeLabel = $("Label[for='rememberMe']");
-  warningMsg = $(".warning");
-
+  $loginButton = $("#login");
+  $logoutButton = $("#logout");
+  $usernameText = $("input[name='username']");
+  $passwordText = $("input[name='password']");
+  $rememberMeCheckBox = $("input[name='remember_me']");
+  $warningLoginMsg = $(".warning-login");
+  $warningLogoutMsg = $(".warning-logout");
+  $user = $(".user");
+  $view = $("#view");
   bindEnterKey();
-
   getCurrentTabUrl(function() {
 
   });
