@@ -5,7 +5,8 @@ var $logoutButton = null;
 var $usernameText = null;
 var $passwordText = null;
 var $rememberMeCheckBox = null;
-var $warningMsg = null;
+var $warningLoginMsg = null;
+var $warningLogoutMsg = null;
 var $view = null;
 
 function getCurrentTabUrl(callback) {
@@ -36,12 +37,12 @@ function initialLoginButton() {
         closePopupView();
         return;
       }
-      $warningMsg.text('User is not existed or password is not correct.');
-      $warningMsg.show();
+      $warningLoginMsg.text('User is not existed or password is not correct.');
+      $warningLoginMsg.addClass("active");
     })
     .fail(function() {
-      $warningMsg.text('Login Fail');
-      $warningMsg.show();
+      $warningLoginMsg.text('Login Fail');
+      $warningLoginMsg.addClass("active");
     });
   });
 }
@@ -70,8 +71,8 @@ function initialLogoutButton() {
       closePopupView();
     })
     .fail(function() {
-      $warningMsg.text('Logout Fail');
-      $warningMsg.show();
+      $warningLogoutMsg.text('Logout Fail');
+      $warningLogoutMsg.addClass("active");
     });
   });
 }
@@ -88,12 +89,12 @@ chrome.runtime.sendMessage(
 
 function loginViewChange() {
   $view.addClass("is-login");
-  $warningMsg.hide();
+  $warningLoginMsg.removeClass("active");
 }
 
 function logoutViewChange() {
   $view.removeClass("is-login");
-  $warningMsg.hide();
+  $warningLogoutMsg.removeClass("active");
 }
 
 function bindEnterKey() {
@@ -110,7 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
   $usernameText = $("input[name='username']");
   $passwordText = $("input[name='password']");
   $rememberMeCheckBox = $("input[name='remember_me']");
-  $warningMsg = $(".warning");
+  $warningLoginMsg = $(".warning-login");
+  $warningLogoutMsg = $(".warning-logout");
   $view = $("#view");
   bindEnterKey();
   getCurrentTabUrl(function() {

@@ -8,10 +8,6 @@
   overflow: auto;
 }
 
-.warning {
-  display: none;
-}
-
 .view-login {
   display: block;
 }
@@ -74,7 +70,13 @@
   color: #fff;
 }
 
-.warning {
+.warning-login, .warning-logout {
   color: red;
   font-size: 14px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.active.warning-login, .active.warning-logout {
+  display: block;
 }
