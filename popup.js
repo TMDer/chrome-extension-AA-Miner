@@ -12,10 +12,16 @@ function getCurrentTabUrl(callback) {
   initialLoginButton();
   initialLogoutButton();
   callback();
-};
+}
 
 function initialLoginButton() {
+
+  var body = document.body;
+
   loginButton.click(function() {
+
+    addMask(body);
+
     var username = usernameText.val();
     var password = passwordText.val();
     var rememberMe = rememberMeCheckBox.val();
@@ -34,6 +40,7 @@ function initialLoginButton() {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
         loginViewChange();
         closePopupView();
+        removeMask(body);
         return;
       }
       warningMsg.show();
@@ -58,7 +65,13 @@ function closePopupView() {
 }
 
 function initialLogoutButton() {
+
+  var body = document.body;
+
   logoutButton.click(function() {
+
+    addMask(body);
+
     $.ajax( {
       method: "POST",
       url: logoutUrl
@@ -68,6 +81,7 @@ function initialLogoutButton() {
       logoutViewChange();
       reloadContentView();
       closePopupView();
+      removeMask(body);
     })
     .fail(function() {
       warningMsg.show();

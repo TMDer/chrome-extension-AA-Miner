@@ -1,6 +1,7 @@
 var requestAdDraftParams = "";
 var domain = "http://localhost:1337";
 var pluginEnableStatus = false;
+var aaMinerContinueButton = null;
 
 function changeButtonReviewChanges() {
   var buttonReviewChanges = document.getElementsByClassName("_2yak");
@@ -13,7 +14,7 @@ function changeButtonReviewChanges() {
 };
 
 function changeButtonContinue() {
-  var originButtonContinue = document.getElementsByClassName("selected")[1];
+  var originButtonContinue = document.getElementsByClassName("selected")[2];
   var createDom = document.createElement("button");
   var parentDom = originButtonContinue.parentNode;
   createDom.id = "updatefromPE";
@@ -22,6 +23,7 @@ function changeButtonContinue() {
   originButtonContinue.style.display = "none";
   parentDom.appendChild(createDom);
   createDom.addEventListener("click", requestAddraftParams);
+  aaMinerContinueButton = createDom;
 };
 
 function requestAddraftParams() {
@@ -32,6 +34,7 @@ function requestAddraftParams() {
 };
 
 function sendAAMinerAPI(data) {
+  addMask(aaMinerContinueButton);
   $.ajax({
     method: "POST",
     url: domain + "/chromeExtension/updateFromPE",
@@ -40,6 +43,7 @@ function sendAAMinerAPI(data) {
   .done(function(msgDone) {
     var statusDone = msgDone.status;
     var buttonClose = document.getElementsByClassName("layerCancel")[0];
+    removeMask(aaMinerContinueButton);
     if(statusDone === "success") {
       alert("AA Miner Update Success!");
       buttonClose.click();
