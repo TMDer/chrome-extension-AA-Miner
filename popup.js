@@ -43,7 +43,6 @@ function initialLoginButton() {
         $user.text("Hi, " + msg.user);
         enableAAChangesBtn();
         loginViewChange();
-        removeMask(body);
         closePopupView();
         return;
       }
