@@ -1,5 +1,6 @@
 var currentAddraftsParams = {};
 var isLogin = false;
+var userName = "";
 var options = {
   domain: 'localhost'
 };
@@ -36,6 +37,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 }, {urls: ["*://graph.facebook.com/*/current_addrafts*"]}, ["blocking", "requestHeaders"]);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  if(message.username)
+    userName = message.username;
   switch(message) {
     case "requestAdDraftParams":
       sendResponse({response: currentAddraftsParams});
@@ -49,6 +52,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       break;
     case "logout":
       setIsLogin(false);
+      break;
+    case "getUserName":
+      sendResponse(userName);
       break;
   }
 });

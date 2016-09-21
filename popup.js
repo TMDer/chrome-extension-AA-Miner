@@ -19,9 +19,9 @@ function getCurrentTabUrl(callback) {
 
 function initialLoginButton() {
   $loginButton.click(function() {
-    
+
     addMask(body);
-    
+
     var username = $usernameText.val();
     var password = $passwordText.val();
     var rememberMe = $rememberMeCheckBox.val();
@@ -37,10 +37,13 @@ function initialLoginButton() {
     })
     .done(function(msg) {
       if(msg.status === "success") {
+        var objUserName = {username: msg.user};
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
+        chrome.runtime.sendMessage(objUserName, function(user) {});
         $user.text("Hi, " + msg.user);
         enableAAChangesBtn();
         loginViewChange();
+        removeMask(body);
         closePopupView();
         return;
       }
@@ -74,9 +77,9 @@ function closePopupView() {
 
 function initialLogoutButton() {
   $logoutButton.click(function() {
-    
+
     addMask(body);
-    
+
     $.ajax( {
       method: "POST",
       url: logoutUrl
@@ -95,6 +98,14 @@ function initialLogoutButton() {
   });
 }
 
+function getUserName() {
+  chrome.runtime.sendMessage(
+    "getUserName", function(userName) {
+      if(userName)
+        $user.text("Hi, " + userName);
+  });
+}
+
 chrome.runtime.sendMessage(
   "isLoginStatus", function(rememberMeStatus) {
     if(rememberMeStatus) {
@@ -105,6 +116,8 @@ chrome.runtime.sendMessage(
     logoutViewChange();
   }
 );
+
+chrome.browserAction.onClicked.addListener(getUserName());
 
 function loginViewChange() {
   $view.addClass("is-login");
