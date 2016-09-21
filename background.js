@@ -51,6 +51,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       sendResponse(isLogin);
       break;
     case "logout":
+      userName = "";
       setIsLogin(false);
       break;
     case "getUserName":
