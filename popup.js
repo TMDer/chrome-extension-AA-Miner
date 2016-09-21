@@ -39,7 +39,7 @@ function initialLoginButton() {
       if(msg.status === "success") {
         chrome.runtime.sendMessage("loginSuccess", function(resMsg) {});
         $user.text("Hi, " + msg.user);
-        enableAAChangesBtn();
+        triggerEnableAAChangesBtn();
         loginViewChange();
         closePopupView();
         return;
@@ -53,18 +53,6 @@ function initialLoginButton() {
       $warningLoginMsg.addClass("active");
       removeMask(body);
     });
-  });
-}
-
-function disableAAChangesBtn() {
-  chrome.tabs.executeScript({
-    code: "disableAAChangesBtn()"
-  });
-}
-
-function enableAAChangesBtn() {
-  chrome.tabs.executeScript({
-    code: "enableAAChangesBtn()"
   });
 }
 
@@ -84,7 +72,7 @@ function initialLogoutButton() {
     .done(function() {
       chrome.runtime.sendMessage("logout", function(resMsg) {});
       logoutViewChange();
-      disableAAChangesBtn();
+      triggerDisableAAChangesBtn();
       closePopupView();
     })
     .fail(function() {
