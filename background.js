@@ -80,4 +80,9 @@ function getRememberMeCookie(data) {
 
 function setIsLogin(boolean) {
   isLogin = boolean;
+
+  if(isLogin)
+    triggerEnableAAChangesBtnByBackground();
+  else
+    triggerDisableAAChangesBtnByBackground();
 }

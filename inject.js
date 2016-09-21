@@ -10,6 +10,10 @@ function getPEReviewChangesButton() {
 
 function disableAAChangesBtn() {
   var peReviewChangesButton = getPEReviewChangesButton();
+
+  if (!isAAMode(peReviewChangesButton))
+    return;
+
   peReviewChangesButton.removeEventListener("click", initAAContinueBtn);
   peReviewChangesButton.style.backgroundColor = peButtonOriginColor;
 }
@@ -18,10 +22,13 @@ function enableAAChangesBtn() {
   var peReviewChangesButton = getPEReviewChangesButton();
 
   if (!peReviewChangesButton)
-    return setTimeout(enableAAChangesBtn, 5000);
+    return setTimeout(enableAAChangesBtn, 3000);
+
+  if(isAAMode(peReviewChangesButton))
+      return;
 
   peButtonOriginColor = peReviewChangesButton.style.backgroundColor;
-  peReviewChangesButton.style.backgroundColor = "#E74C3C";
+  peReviewChangesButton.style.backgroundColor = aaMinerColor;
   peReviewChangesButton.addEventListener("click", initAAContinueBtn);
 }
 
