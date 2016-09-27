@@ -10,7 +10,8 @@
   },
   "background": {
     "scripts": [
-      "jquery-2.0.0.min.js", "AAMinerUtils.js", "background.js"
+      "jquery-2.0.0.min.js", "AAMinerUtils.js",
+      "AAMinerConfig.js", "background.js"
     ],
     "persistent": true
   },

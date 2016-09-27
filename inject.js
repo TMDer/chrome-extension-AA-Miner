@@ -1,5 +1,5 @@
 var requestAdDraftParams = "";
-var domain = "http://localhost:1337";
+var updateFromPEUrl = null;
 var aaMinerContinueButton = null;
 var peButtonOriginColor = null;
 
@@ -61,7 +61,7 @@ function sendAAMinerAPI(data) {
   addMask(aaMinerContinueButton);
   $.ajax({
     method: "POST",
-    url: domain + "/chromeExtension/updateFromPE",
+    url: updateFromPEUrl,
     data: data
   })
   .done(function(msgDone) {
@@ -93,6 +93,12 @@ function sendAAMinerAPI(data) {
       return;
 
     enableAAChangesBtn();
+
+  });
+
+  chrome.runtime.sendMessage("getUpdateAdUrl", function(result) {
+
+    updateFromPEUrl = result;
 
   });
 

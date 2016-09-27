@@ -1,5 +1,5 @@
-var loginUrl = "http://localhost:1337/auth/signin/chromeExtension";
-var logoutUrl = "http://localhost:1337/auth/logout";
+var loginUrl = null;
+var logoutUrl = null;
 var $loginButton = null;
 var $logoutButton = null;
 var $usernameText = null;
@@ -123,6 +123,12 @@ document.addEventListener("DOMContentLoaded", function() {
   $user = $(".user");
   $view = $("#view");
   bindEnterKey();
+
+  chrome.runtime.sendMessage("getAAMinerUrl", function(result) {
+    loginUrl = result.loginUrl;
+    logoutUrl = result.logoutUrl;
+  });
+
   getCurrentTabUrl(function() {
 
   });
