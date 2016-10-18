@@ -5,20 +5,20 @@
  * @version 1.0
  */
 var AAMinerConfig = (function() {
-  LOCAL_HOST = "localhost";
+  var LOCAL_HOST = "localhost";
 
-  LOGIN_OF_API_PATH = "/auth/signin/chromeExtension";
-  LOGOUT_OF_API_PATH = "/auth/logout";
-  UPDATE_AD_OF_API_PATH = "/chromeExtension/updateFromPE";
+  var LOGIN_OF_API_PATH = "/auth/signin/chromeExtension";
+  var LOGOUT_OF_API_PATH = "/auth/logout";
+  var UPDATE_AD_OF_API_PATH = "/chromeExtension/updateFromPE";
 
-  _protocol = null;
-  _aaMinerHost = null;
-  _port = ":1337";
-  _regExpOfUrl = new RegExp(/(.*:\/\/)(.*)\/.*/);
-  _domain = null;
-  _loginUrl = null;
-  _logoutUrl = null;
-  _updateAdUrl = null;
+  var _protocol = null;
+  var _aaMinerHost = null;
+  var _port = ":1337";
+  var _regExpOfUrl = new RegExp(/(.*:\/\/)(.*)\/.*/);
+  var _domain = null;
+  var _loginUrl = null;
+  var _logoutUrl = null;
+  var _updateAdUrl = null;
 
   var _self = {};
 
